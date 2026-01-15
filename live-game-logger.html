@@ -21,15 +21,15 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #e8e8e8;
             color: #111;
-            font-size: 14px;
         }
 
         .container {
             display: flex;
             flex-direction: column;
             height: 100vh;
-            padding: 6px;
-            gap: 4px;
+            height: 100dvh;
+            padding: 8px;
+            gap: 6px;
         }
 
         /* HEADER */
@@ -38,94 +38,96 @@
             justify-content: space-between;
             align-items: center;
             background: #333;
-            border-radius: 8px;
-            padding: 4px 8px;
+            border-radius: 10px;
+            padding: 6px 10px;
             flex-shrink: 0;
         }
 
-        .header-left { display: flex; align-items: center; gap: 6px; }
-        .lock-indicator { font-size: 16px; }
+        .header-left { display: flex; align-items: center; gap: 8px; }
+        .lock-indicator { font-size: 20px; }
 
         .game-badge {
             background: #fbbf24;
             color: #000;
-            padding: 2px 8px;
-            border-radius: 6px;
+            padding: 4px 12px;
+            border-radius: 8px;
             text-align: center;
             font-weight: bold;
         }
-        .game-badge-label { font-size: 7px; text-transform: uppercase; }
-        .game-badge-num { font-size: 16px; line-height: 1; }
+        .game-badge-label { font-size: 8px; text-transform: uppercase; }
+        .game-badge-num { font-size: 20px; line-height: 1; }
 
         .goalie-display {
             background: #000;
             border: 2px solid #fbbf24;
-            border-radius: 6px;
-            padding: 2px 8px;
+            border-radius: 8px;
+            padding: 4px 12px;
             text-align: center;
         }
-        .goalie-num { font-size: 16px; font-weight: bold; color: #fbbf24; line-height: 1; }
-        .goalie-name { font-size: 8px; color: #aaa; }
+        .goalie-num { font-size: 20px; font-weight: bold; color: #fbbf24; line-height: 1; }
+        .goalie-name { font-size: 9px; color: #aaa; }
 
-        .header-center { display: flex; gap: 3px; }
+        .header-center { display: flex; gap: 4px; }
 
         .period-summary {
             text-align: center;
-            padding: 2px 4px;
-            border-radius: 4px;
+            padding: 4px 6px;
+            border-radius: 6px;
             background: #555;
-            min-width: 40px;
+            min-width: 44px;
         }
         .period-summary.active { background: #fbbf24; color: #000; }
         .period-summary.saved { background: #22c55e; color: #fff; }
-        .period-label { font-size: 7px; text-transform: uppercase; color: #ccc; }
+        .period-label { font-size: 8px; text-transform: uppercase; color: #ccc; }
         .period-summary.active .period-label { color: #333; }
         .period-summary.saved .period-label { color: #fff; }
-        .period-data { font-size: 8px; font-weight: bold; color: #fff; }
+        .period-data { font-size: 10px; font-weight: bold; color: #fff; }
         .period-summary.active .period-data { color: #000; }
         .period-data.empty { opacity: 0.5; }
 
-        .header-right { display: flex; gap: 4px; }
+        .header-right { display: flex; gap: 5px; }
 
-        .setup-btn {
-            padding: 6px 10px;
+        .header-btn {
+            padding: 8px 14px;
             background: #6366f1;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             color: white;
             font-weight: bold;
-            font-size: 10px;
+            font-size: 12px;
             cursor: pointer;
         }
-        .setup-btn:disabled { opacity: 0.5; }
-        .setup-btn.locked { background: #dc2626; }
+        .header-btn:disabled { opacity: 0.5; }
+        .header-btn.locked { background: #dc2626; }
 
-        /* FACEOFFS */
+        /* FACEOFFS - 55% of space */
         .fo-section {
+            flex: 55;
             background: #d0d0d0;
             border-radius: 10px;
-            padding: 4px;
-            flex: 1;
+            padding: 6px;
             display: flex;
             flex-direction: column;
             min-height: 0;
+            overflow: hidden;
         }
 
         .fo-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4px;
+            gap: 6px;
             flex: 1;
             min-height: 0;
         }
 
         .fo-card {
-            border-radius: 10px;
-            padding: 4px;
+            border-radius: 12px;
+            padding: 6px;
             display: flex;
             flex-direction: column;
             border: 4px solid;
             min-height: 0;
+            overflow: hidden;
         }
         
         .fo-card.c1 { background: #3b82f6; border-color: #1d4ed8; }
@@ -134,7 +136,7 @@
         .fo-card.other { background: #f97316; border-color: #ea580c; }
 
         .fo-card-label {
-            font-size: 44px;
+            font-size: 48px;
             font-weight: bold;
             color: #fff;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
@@ -146,26 +148,23 @@
         .fo-tap-row { 
             display: flex; 
             gap: 8px; 
-            width: 100%; 
             flex: 1;
-            min-height: 0;
             margin-top: 4px;
+            min-height: 0;
         }
 
         .fo-tap-btn {
             flex: 1;
-            height: 100%;
-            min-height: 50px;
             border: none;
-            border-radius: 8px;
-            font-size: 36px;
+            border-radius: 10px;
+            font-size: 32px;
             font-weight: bold;
             color: white;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            min-height: 50px;
         }
         .fo-tap-btn:active { transform: scale(0.97); }
         .fo-tap-btn.win { background: #15803d; }
@@ -176,51 +175,50 @@
             justify-content: center;
             align-items: center;
             gap: 6px;
-            margin-top: 2px;
+            margin-top: 4px;
             flex-shrink: 0;
         }
 
         .fo-card-stats { 
             background: rgba(0,0,0,0.3);
-            padding: 1px 8px;
+            padding: 2px 10px;
             border-radius: 4px;
             color: #fff;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         .fo-dec-btn {
-            width: 28px;
-            height: 20px;
+            width: 32px;
+            height: 24px;
             border: none;
             border-radius: 4px;
             background: rgba(0,0,0,0.3);
             color: #fff;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
         }
-        .fo-dec-btn:active { background: rgba(0,0,0,0.5); }
 
-        /* TEAM TOTAL BAR */
+        /* TEAM TOTAL */
         .fo-total {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: #333;
-            border-radius: 6px;
-            padding: 6px 10px;
-            margin-top: 4px;
+            border-radius: 8px;
+            padding: 6px 12px;
+            margin-top: 6px;
             flex-shrink: 0;
         }
         
-        .fo-total-team { display: flex; align-items: center; gap: 8px; }
-        .fo-total-label { font-size: 12px; color: #aaa; text-transform: uppercase; font-weight: bold; }
-        .fo-total-pct { font-size: 24px; font-weight: bold; color: #fff; }
+        .fo-total-team { display: flex; align-items: center; gap: 10px; }
+        .fo-total-label { font-size: 14px; color: #aaa; text-transform: uppercase; font-weight: bold; }
+        .fo-total-pct { font-size: 28px; font-weight: bold; color: #fff; }
         .fo-total-sub { font-size: 14px; color: #ccc; font-weight: bold; }
         
-        .fo-individual-stats { display: flex; gap: 4px; }
-        .fo-ind-stat { text-align: center; padding: 2px 6px; border-radius: 4px; }
+        .fo-individual-stats { display: flex; gap: 5px; }
+        .fo-ind-stat { text-align: center; padding: 3px 8px; border-radius: 5px; }
         .fo-ind-stat.c1 { background: #3b82f6; }
         .fo-ind-stat.c2 { background: #a855f7; }
         .fo-ind-stat.c3 { background: #14b8a6; }
@@ -228,22 +226,37 @@
         .fo-ind-label { font-size: 9px; font-weight: bold; color: #fff; }
         .fo-ind-value { font-size: 12px; font-weight: bold; color: #fff; }
 
-        /* GOALIE - COMPACT */
+        /* GOALIE - 45% of space */
         .goalie-section {
+            flex: 45;
             background: #333;
-            border-radius: 8px;
-            padding: 6px;
-            flex-shrink: 0;
+            border-radius: 10px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
         }
 
-        .goalie-tap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .goalie-tap-wrapper { display: flex; flex-direction: column; align-items: center; }
+        .goalie-tap-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+            flex: 1;
+            min-height: 0;
+        }
+        
+        .goalie-tap-wrapper { 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 0;
+        }
 
         .goalie-tap-btn {
-            width: 100%;
-            height: 80px;
-            border-radius: 10px;
-            border: 3px solid;
+            flex: 1;
+            min-height: 100px;
+            border-radius: 12px;
+            border: 4px solid;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -253,56 +266,39 @@
         .goalie-tap-btn:active { transform: scale(0.97); }
         .goalie-tap-btn.shot { background: #15803d; border-color: #22c55e; }
         .goalie-tap-btn.goal { background: #b91c1c; border-color: #ef4444; }
-        .goalie-tap-label { font-size: 14px; font-weight: bold; color: white; text-transform: uppercase; }
-        .goalie-tap-count { font-size: 40px; font-weight: bold; color: white; line-height: 1; }
+        .goalie-tap-label { font-size: 18px; font-weight: bold; color: white; text-transform: uppercase; }
+        .goalie-tap-count { font-size: 56px; font-weight: bold; color: white; line-height: 1; }
 
         .goalie-tap-dec {
-            width: 50%;
-            height: 24px;
-            margin-top: 4px;
+            width: 60%;
+            height: 28px;
+            margin: 4px auto 0;
             background: #555;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             color: #fff;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
+            flex-shrink: 0;
         }
-        .goalie-tap-dec:active { background: #666; }
 
         .goalie-stats {
             display: flex;
             justify-content: center;
             gap: 30px;
             background: #222;
-            border-radius: 6px;
-            padding: 6px;
+            border-radius: 8px;
+            padding: 8px;
             margin-top: 6px;
+            flex-shrink: 0;
         }
         .goalie-stat-item { text-align: center; }
-        .goalie-stat-value { font-size: 24px; font-weight: bold; color: #fff; }
+        .goalie-stat-value { font-size: 28px; font-weight: bold; color: #fff; }
         .goalie-stat-value.shots { color: #22c55e; }
         .goalie-stat-value.ga { color: #ef4444; }
         .goalie-stat-value.svpct { color: #fbbf24; }
         .goalie-stat-label { font-size: 10px; color: #aaa; text-transform: uppercase; }
-
-        /* SAVE BUTTONS */
-        .save-bar { display: flex; gap: 8px; flex-shrink: 0; }
-
-        .save-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-        .save-btn:active { transform: scale(0.98); }
-        .save-btn:disabled { opacity: 0.5; }
-        .save-btn.period { background: #6366f1; color: white; }
-        .save-btn.game { background: #15803d; color: white; }
 
         /* TOAST */
         .toast {
@@ -322,7 +318,7 @@
         .toast.show { transform: translateX(-50%) translateY(0); }
         .toast.error { background: #b91c1c; }
 
-        /* MODAL */
+        /* MODALS */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -374,10 +370,11 @@
         .goalie-select-btn .name { font-size: 11px; color: #aaa; }
         .goalie-select-btn.selected .name { color: #ddd; }
 
-        .modal-buttons { display: flex; gap: 10px; }
+        .modal-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
 
         .modal-btn {
             flex: 1;
+            min-width: 45%;
             padding: 16px;
             border: none;
             border-radius: 8px;
@@ -387,6 +384,9 @@
         }
         .modal-btn.cancel { background: #555; color: #fff; }
         .modal-btn.confirm { background: #15803d; color: white; }
+        .modal-btn.period { background: #6366f1; color: white; }
+        .modal-btn.game { background: #15803d; color: white; }
+        .modal-btn.lock-only { background: #dc2626; color: white; }
 
         .url-note { font-size: 11px; color: #888; margin-top: 8px; text-align: center; }
     </style>
@@ -424,8 +424,8 @@
                 </div>
             </div>
             <div class="header-right">
-                <button class="setup-btn" id="setupBtn" onclick="openSetup()">Setup</button>
-                <button class="setup-btn" id="lockBtn" onclick="toggleLock()">Lock</button>
+                <button class="header-btn" id="setupBtn" onclick="openSetup()">Setup</button>
+                <button class="header-btn" id="lockBtn" onclick="handleLockBtn()">Lock</button>
             </div>
         </div>
 
@@ -539,15 +539,11 @@
                 </div>
             </div>
         </div>
-
-        <div class="save-bar">
-            <button class="save-btn period" id="btnSavePeriod" onclick="savePeriod()">Save Period</button>
-            <button class="save-btn game" id="btnSaveGame" onclick="saveGame()">Save Game</button>
-        </div>
     </div>
 
     <div class="toast" id="toast"></div>
 
+    <!-- Setup Modal -->
     <div class="modal-overlay" id="setupModal">
         <div class="modal">
             <div class="modal-title">⚙️ Game Setup</div>
@@ -584,6 +580,19 @@
         </div>
     </div>
 
+    <!-- Lock/Save Modal - shows when you tap Lock -->
+    <div class="modal-overlay" id="lockModal">
+        <div class="modal">
+            <div class="modal-title">🔒 Save & Lock</div>
+            <div class="modal-buttons">
+                <button class="modal-btn period" onclick="savePeriodAndLock()">Save Period</button>
+                <button class="modal-btn game" onclick="saveGameAndLock()">Save Game</button>
+                <button class="modal-btn lock-only" onclick="justLock()">Just Lock</button>
+                <button class="modal-btn cancel" onclick="closeLockModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let SCRIPT_URL = localStorage.getItem('hockeyScriptUrl') || '';
         let isLocked = false;
@@ -601,6 +610,7 @@
         const periodData = { 1: null, 2: null, 3: null };
         const setupState = { goalie: { num: 31, name: 'Tomasula' } };
 
+        // Setup Modal
         function openSetup() {
             if (isLocked) return;
             document.getElementById('setupModal').classList.add('active');
@@ -648,15 +658,51 @@
             } catch (e) { console.error('Error loading labels:', e); }
         }
 
-        function toggleLock() {
-            isLocked = !isLocked;
-            document.getElementById('lockIndicator').textContent = isLocked ? '🔒' : '🔓';
-            document.getElementById('setupBtn').disabled = isLocked;
-            document.getElementById('lockBtn').textContent = isLocked ? 'Unlock' : 'Lock';
-            document.getElementById('lockBtn').classList.toggle('locked', isLocked);
-            showToast(isLocked ? 'Locked' : 'Unlocked');
+        // Lock Modal - tap Lock button shows save options
+        function handleLockBtn() {
+            if (isLocked) {
+                // Unlock immediately
+                isLocked = false;
+                document.getElementById('lockIndicator').textContent = '🔓';
+                document.getElementById('setupBtn').disabled = false;
+                document.getElementById('lockBtn').textContent = 'Lock';
+                document.getElementById('lockBtn').classList.remove('locked');
+                showToast('Unlocked');
+            } else {
+                // Show save options modal
+                document.getElementById('lockModal').classList.add('active');
+            }
         }
 
+        function closeLockModal() { document.getElementById('lockModal').classList.remove('active'); }
+
+        function justLock() {
+            closeLockModal();
+            doLock();
+        }
+
+        function doLock() {
+            isLocked = true;
+            document.getElementById('lockIndicator').textContent = '🔒';
+            document.getElementById('setupBtn').disabled = true;
+            document.getElementById('lockBtn').textContent = 'Unlock';
+            document.getElementById('lockBtn').classList.add('locked');
+            showToast('Locked');
+        }
+
+        function savePeriodAndLock() {
+            closeLockModal();
+            savePeriod();
+            doLock();
+        }
+
+        async function saveGameAndLock() {
+            closeLockModal();
+            await saveGame();
+            doLock();
+        }
+
+        // Faceoffs
         function foTap(center, type) {
             if (type === 'w') { gameState.fo[center].w++; document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w; }
             else { gameState.fo[center].l++; document.getElementById('foBtnL_' + center).textContent = gameState.fo[center].l; }
@@ -691,6 +737,7 @@
             else { pctEl.textContent = Math.round((totalW / total) * 100) + '%'; }
         }
 
+        // Goalie
         function tapShot() { gameState.shots++; document.getElementById('shotCount').textContent = gameState.shots; updateGoalieStats(); updatePeriodDisplay(); }
         function tapGoal() { gameState.goals++; document.getElementById('goalCount').textContent = gameState.goals; updateGoalieStats(); updatePeriodDisplay(); }
         function undoShot() { if (gameState.shots > 0) { gameState.shots--; document.getElementById('shotCount').textContent = gameState.shots; updateGoalieStats(); updatePeriodDisplay(); } }
@@ -705,6 +752,7 @@
             else { svPctEl.textContent = (saves / shots).toFixed(3); }
         }
 
+        // Period tracking
         function updatePeriodDisplay() {
             let foW = 0, foL = 0;
             ['c1', 'c2', 'c3', 'other'].forEach(c => { foW += gameState.fo[c].w; foL += gameState.fo[c].l; });
@@ -729,8 +777,9 @@
             periodData[currentPeriod] = { foW, foL, fo: JSON.parse(JSON.stringify(gameState.fo)), shots: gameState.shots + gameState.goals, ga: gameState.goals, saves: gameState.shots };
             document.getElementById('periodP' + currentPeriod).classList.add('saved');
             document.getElementById('periodP' + currentPeriod).classList.remove('active');
+            const savedPeriod = currentPeriod;
             if (currentPeriod < 3) { currentPeriod++; document.getElementById('periodP' + currentPeriod).classList.add('active'); resetCurrentCounters(); }
-            showToast('P' + (currentPeriod - 1) + ' Saved!');
+            showToast('P' + savedPeriod + ' Saved!');
             updateGameTotalsDisplay();
         }
 
@@ -751,8 +800,7 @@
 
         async function saveGame() {
             if (!SCRIPT_URL) { showToast('Setup required', true); return; }
-            const btn = document.getElementById('btnSaveGame');
-            btn.disabled = true; btn.textContent = 'Saving...';
+            showToast('Saving...');
             let totalFo = { c1: { w: 0, l: 0 }, c2: { w: 0, l: 0 }, c3: { w: 0, l: 0 }, c4: { w: 0, l: 0 }, c5: { w: 0, l: 0 }, other: { w: 0, l: 0 } };
             let totalShots = 0, totalGA = 0;
             [1, 2, 3].forEach(p => { if (periodData[p]) { ['c1', 'c2', 'c3', 'other'].forEach(c => { totalFo[c].w += periodData[p].fo[c].w; totalFo[c].l += periodData[p].fo[c].l; }); totalShots += periodData[p].shots; totalGA += periodData[p].ga; } });
@@ -764,7 +812,6 @@
             try { await fetch(SCRIPT_URL + '?' + foParams.toString(), { mode: 'no-cors' }); } catch (e) {}
             const goalieParams = new URLSearchParams({ action: 'recordGoalie', gameNum: gameState.gameNum, goalie: gameState.goalie.value, ga: totalGA.toString(), shots: totalShots.toString(), result: '' });
             try { await fetch(SCRIPT_URL + '?' + goalieParams.toString(), { mode: 'no-cors' }); } catch (e) {}
-            btn.disabled = false; btn.textContent = 'Save Game';
             showToast('Game ' + gameState.gameNum + ' Saved!');
         }
 
