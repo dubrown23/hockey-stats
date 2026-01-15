@@ -39,63 +39,63 @@
             justify-content: space-between;
             align-items: center;
             background: #333;
-            border-radius: 10px;
-            padding: 6px 10px;
+            border-radius: 8px;
+            padding: 4px 8px;
             flex-shrink: 0;
         }
 
-        .header-left { display: flex; align-items: center; gap: 8px; }
-        .lock-indicator { font-size: 20px; }
+        .header-left { display: flex; align-items: center; gap: 6px; }
+        .lock-indicator { font-size: 18px; }
 
         .game-badge {
             background: #fbbf24;
             color: #000;
-            padding: 4px 12px;
-            border-radius: 8px;
+            padding: 3px 8px;
+            border-radius: 6px;
             text-align: center;
             font-weight: bold;
         }
-        .game-badge-label { font-size: 8px; text-transform: uppercase; }
-        .game-badge-num { font-size: 20px; line-height: 1; }
+        .game-badge-label { font-size: 7px; text-transform: uppercase; }
+        .game-badge-num { font-size: 16px; line-height: 1; }
 
         .goalie-display {
             background: #000;
             border: 2px solid #fbbf24;
-            border-radius: 8px;
-            padding: 4px 12px;
+            border-radius: 6px;
+            padding: 3px 8px;
             text-align: center;
         }
-        .goalie-num { font-size: 20px; font-weight: bold; color: #fbbf24; line-height: 1; }
-        .goalie-name { font-size: 9px; color: #aaa; }
+        .goalie-num { font-size: 16px; font-weight: bold; color: #fbbf24; line-height: 1; }
+        .goalie-name { font-size: 8px; color: #aaa; }
 
-        .header-center { display: flex; gap: 4px; }
+        .header-center { display: flex; gap: 3px; }
 
         .period-summary {
             text-align: center;
-            padding: 4px 8px;
+            padding: 3px 5px;
             border-radius: 6px;
             background: #555;
-            min-width: 70px;
+            min-width: 90px;
         }
         .period-summary.active { background: #fbbf24; color: #000; }
         .period-summary.saved { background: #22c55e; color: #fff; }
-        .period-label { font-size: 9px; text-transform: uppercase; color: #ccc; }
+        .period-label { font-size: 8px; text-transform: uppercase; color: #ccc; }
         .period-summary.active .period-label { color: #333; }
         .period-summary.saved .period-label { color: #fff; }
-        .period-data { font-size: 11px; font-weight: bold; color: #fff; }
+        .period-data { font-size: 9px; font-weight: bold; color: #fff; white-space: nowrap; }
         .period-summary.active .period-data { color: #000; }
         .period-data.empty { opacity: 0.5; }
 
-        .header-right { display: flex; gap: 5px; }
+        .header-right { display: flex; gap: 4px; }
 
         .header-btn {
-            padding: 8px 14px;
+            padding: 6px 10px;
             background: #6366f1;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             color: white;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 10px;
             cursor: pointer;
         }
         .header-btn:disabled { opacity: 0.5; }
@@ -604,8 +604,10 @@
             goalie: { num: 31, name: 'Tomasula', value: '#31 Tomasula' },
             fo: { c1: { w: 0, l: 0 }, c2: { w: 0, l: 0 }, c3: { w: 0, l: 0 }, other: { w: 0, l: 0 } },
             labels: { c1: 'c1', c2: 'c2', c3: 'c3', other: 'OTHER' },
-            shots: 0,
-            goals: 0
+            periodShots: 0,  // Current period shots (saves)
+            periodGoals: 0,  // Current period goals against
+            totalShots: 0,   // Cumulative game shots (saves)
+            totalGoals: 0    // Cumulative game goals against
         };
 
         const periodData = { 1: null, 2: null, 3: null };
@@ -703,117 +705,240 @@
             doLock();
         }
 
-        // Faceoffs
+        // Faceoffs - per period counters, cumulative stats in bottom bar
         function foTap(center, type) {
-            if (type === 'w') { gameState.fo[center].w++; document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w; }
-            else { gameState.fo[center].l++; document.getElementById('foBtnL_' + center).textContent = gameState.fo[center].l; }
-            updateFOStats(center);
-            updateFOTotal();
+            if (type === 'w') { 
+                gameState.fo[center].w++; 
+                document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w; 
+            } else { 
+                gameState.fo[center].l++; 
+                document.getElementById('foBtnL_' + center).textContent = gameState.fo[center].l; 
+            }
+            updateCardStats(center);
             updatePeriodDisplay();
         }
 
         function foDec(center, type) {
-            if (type === 'w' && gameState.fo[center].w > 0) { gameState.fo[center].w--; document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w || 'W'; }
-            else if (type === 'l' && gameState.fo[center].l > 0) { gameState.fo[center].l--; document.getElementById('foBtnL_' + center).textContent = gameState.fo[center].l || 'L'; }
-            updateFOStats(center);
-            updateFOTotal();
+            if (type === 'w' && gameState.fo[center].w > 0) { 
+                gameState.fo[center].w--; 
+                document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w || 'W'; 
+            } else if (type === 'l' && gameState.fo[center].l > 0) { 
+                gameState.fo[center].l--; 
+                document.getElementById('foBtnL_' + center).textContent = gameState.fo[center].l || 'L'; 
+            }
+            updateCardStats(center);
             updatePeriodDisplay();
         }
 
-        function updateFOStats(center) {
-            const w = gameState.fo[center].w, l = gameState.fo[center].l, total = w + l;
+        function updateCardStats(center) {
+            // Show current period stats on the card
+            const w = gameState.fo[center].w, l = gameState.fo[center].l;
             document.getElementById('foStats_' + center).textContent = w + '-' + l;
-            const indEl = document.getElementById('foIndValue_' + center);
-            if (total === 0) { indEl.textContent = '-'; }
-            else { indEl.textContent = Math.round((w / total) * 100) + '%'; }
         }
 
-        function updateFOTotal() {
-            let totalW = 0, totalL = 0;
-            ['c1', 'c2', 'c3', 'other'].forEach(c => { totalW += gameState.fo[c].w; totalL += gameState.fo[c].l; });
-            const total = totalW + totalL;
-            const pctEl = document.getElementById('foTeamPct');
-            document.getElementById('foTeamSub').textContent = totalW + 'W - ' + totalL + 'L';
-            if (total === 0) { pctEl.textContent = '-'; }
-            else { pctEl.textContent = Math.round((totalW / total) * 100) + '%'; }
+        // Goalie - tracks both period and cumulative
+        function tapShot() { 
+            gameState.periodShots++; 
+            gameState.totalShots++; 
+            document.getElementById('shotCount').textContent = gameState.totalShots; 
+            updateGoalieStats(); 
+            updatePeriodDisplay(); 
         }
-
-        // Goalie
-        function tapShot() { gameState.shots++; document.getElementById('shotCount').textContent = gameState.shots; updateGoalieStats(); updatePeriodDisplay(); }
-        function tapGoal() { gameState.goals++; document.getElementById('goalCount').textContent = gameState.goals; updateGoalieStats(); updatePeriodDisplay(); }
-        function undoShot() { if (gameState.shots > 0) { gameState.shots--; document.getElementById('shotCount').textContent = gameState.shots; updateGoalieStats(); updatePeriodDisplay(); } }
-        function undoGoal() { if (gameState.goals > 0) { gameState.goals--; document.getElementById('goalCount').textContent = gameState.goals; updateGoalieStats(); updatePeriodDisplay(); } }
+        function tapGoal() { 
+            gameState.periodGoals++; 
+            gameState.totalGoals++; 
+            document.getElementById('goalCount').textContent = gameState.totalGoals; 
+            updateGoalieStats(); 
+            updatePeriodDisplay(); 
+        }
+        function undoShot() { 
+            if (gameState.periodShots > 0 && gameState.totalShots > 0) { 
+                gameState.periodShots--; 
+                gameState.totalShots--; 
+                document.getElementById('shotCount').textContent = gameState.totalShots; 
+                updateGoalieStats(); 
+                updatePeriodDisplay(); 
+            } 
+        }
+        function undoGoal() { 
+            if (gameState.periodGoals > 0 && gameState.totalGoals > 0) { 
+                gameState.periodGoals--; 
+                gameState.totalGoals--; 
+                document.getElementById('goalCount').textContent = gameState.totalGoals; 
+                updateGoalieStats(); 
+                updatePeriodDisplay(); 
+            } 
+        }
 
         function updateGoalieStats() {
-            const shots = gameState.shots + gameState.goals, ga = gameState.goals, saves = gameState.shots;
-            document.getElementById('statShots').textContent = shots || '-';
+            // Always show CUMULATIVE totals in goalie section
+            const totalShots = gameState.totalShots + gameState.totalGoals;
+            const ga = gameState.totalGoals;
+            const saves = gameState.totalShots;
+            document.getElementById('statShots').textContent = totalShots || '-';
             document.getElementById('statGA').textContent = ga || '-';
             const svPctEl = document.getElementById('statSVPct');
-            if (shots === 0) { svPctEl.textContent = '-'; }
-            else { svPctEl.textContent = (saves / shots).toFixed(3); }
+            if (totalShots === 0) { svPctEl.textContent = '-'; }
+            else { svPctEl.textContent = (saves / totalShots).toFixed(3); }
         }
 
         // Period tracking
         function updatePeriodDisplay() {
+            // Current period faceoffs
             let foW = 0, foL = 0;
             ['c1', 'c2', 'c3', 'other'].forEach(c => { foW += gameState.fo[c].w; foL += gameState.fo[c].l; });
-            const total = foW + foL;
-            const pct = total > 0 ? Math.round((foW / total) * 100) : 0;
+            const foTotal = foW + foL;
+            const foPct = foTotal > 0 ? Math.round((foW / foTotal) * 100) : 0;
+            
+            // Current period goalie (just current period, not cumulative)
+            const periodShots = gameState.periodShots + gameState.periodGoals;
+            const periodGA = gameState.periodGoals;
+            const svPct = periodShots > 0 ? Math.round(((periodShots - periodGA) / periodShots) * 100) : 0;
+            
             const el = document.getElementById('periodP' + currentPeriod + 'Data');
-            if (el) { el.textContent = `${foW}-${foL} ${pct}%`; el.classList.remove('empty'); }
+            if (el && (foTotal > 0 || periodShots > 0)) { 
+                el.textContent = `${foW}/${foTotal} ${foPct}%, ${periodShots}/${periodGA} ${svPct}%`; 
+                el.classList.remove('empty'); 
+            }
             updateGameTotalsDisplay();
         }
 
         function updateGameTotalsDisplay() {
+            // Game total faceoffs (all periods + current)
             let totalFoW = 0, totalFoL = 0;
             [1, 2, 3].forEach(p => { if (periodData[p]) { totalFoW += periodData[p].foW; totalFoL += periodData[p].foL; } });
             ['c1', 'c2', 'c3', 'other'].forEach(c => { totalFoW += gameState.fo[c].w; totalFoL += gameState.fo[c].l; });
-            const total = totalFoW + totalFoL;
-            const pct = total > 0 ? Math.round((totalFoW / total) * 100) : 0;
+            const foTotal = totalFoW + totalFoL;
+            const foPct = foTotal > 0 ? Math.round((totalFoW / foTotal) * 100) : 0;
+            
+            // Game total goalie (cumulative)
+            const totalShots = gameState.totalShots + gameState.totalGoals;
+            const totalGA = gameState.totalGoals;
+            const svPct = totalShots > 0 ? Math.round(((totalShots - totalGA) / totalShots) * 100) : 0;
+            
             const gameEl = document.getElementById('periodGameData');
-            if (totalFoW + totalFoL > 0) { gameEl.textContent = `${totalFoW}-${totalFoL} ${pct}%`; gameEl.classList.remove('empty'); }
+            if (foTotal > 0 || totalShots > 0) { 
+                gameEl.textContent = `${totalFoW}/${foTotal} ${foPct}%, ${totalShots}/${totalGA} ${svPct}%`; 
+                gameEl.classList.remove('empty'); 
+            }
+            
+            // Update cumulative individual FO stats in bottom bar
+            updateCumulativeFOStats();
+        }
+        
+        function updateCumulativeFOStats() {
+            ['c1', 'c2', 'c3', 'other'].forEach(c => {
+                // Sum all saved periods + current
+                let w = 0, l = 0;
+                [1, 2, 3].forEach(p => { 
+                    if (periodData[p] && periodData[p].fo[c]) { 
+                        w += periodData[p].fo[c].w; 
+                        l += periodData[p].fo[c].l; 
+                    } 
+                });
+                w += gameState.fo[c].w;
+                l += gameState.fo[c].l;
+                const total = w + l;
+                const indEl = document.getElementById('foIndValue_' + c);
+                if (total === 0) { indEl.textContent = '-'; }
+                else { indEl.textContent = Math.round((w / total) * 100) + '%'; }
+            });
+            
+            // Update team total (cumulative)
+            let totalW = 0, totalL = 0;
+            [1, 2, 3].forEach(p => { if (periodData[p]) { totalW += periodData[p].foW; totalL += periodData[p].foL; } });
+            ['c1', 'c2', 'c3', 'other'].forEach(c => { totalW += gameState.fo[c].w; totalL += gameState.fo[c].l; });
+            const total = totalW + totalL;
+            document.getElementById('foTeamSub').textContent = totalW + 'W - ' + totalL + 'L';
+            if (total === 0) { document.getElementById('foTeamPct').textContent = '-'; }
+            else { document.getElementById('foTeamPct').textContent = Math.round((totalW / total) * 100) + '%'; }
         }
 
         function savePeriod() {
             let foW = 0, foL = 0;
             ['c1', 'c2', 'c3', 'other'].forEach(c => { foW += gameState.fo[c].w; foL += gameState.fo[c].l; });
-            periodData[currentPeriod] = { foW, foL, fo: JSON.parse(JSON.stringify(gameState.fo)), shots: gameState.shots + gameState.goals, ga: gameState.goals, saves: gameState.shots };
+            
+            // Save period data including this period's goalie stats
+            periodData[currentPeriod] = { 
+                foW, 
+                foL, 
+                fo: JSON.parse(JSON.stringify(gameState.fo)), 
+                shots: gameState.periodShots + gameState.periodGoals, 
+                ga: gameState.periodGoals, 
+                saves: gameState.periodShots 
+            };
+            
             document.getElementById('periodP' + currentPeriod).classList.add('saved');
             document.getElementById('periodP' + currentPeriod).classList.remove('active');
             const savedPeriod = currentPeriod;
-            if (currentPeriod < 3) { currentPeriod++; document.getElementById('periodP' + currentPeriod).classList.add('active'); resetCurrentCounters(); }
+            if (currentPeriod < 3) { 
+                currentPeriod++; 
+                document.getElementById('periodP' + currentPeriod).classList.add('active'); 
+                resetPeriodCounters(); // Only reset period counters, not cumulative
+            }
             showToast('P' + savedPeriod + ' Saved!');
             updateGameTotalsDisplay();
         }
 
-        function resetCurrentCounters() {
+        function resetPeriodCounters() {
+            // Reset faceoff counters for new period
             ['c1', 'c2', 'c3', 'other'].forEach(c => {
                 gameState.fo[c] = { w: 0, l: 0 };
                 document.getElementById('foBtnW_' + c).textContent = 'W';
                 document.getElementById('foBtnL_' + c).textContent = 'L';
                 document.getElementById('foStats_' + c).textContent = '0-0';
-                document.getElementById('foIndValue_' + c).textContent = '-';
             });
-            gameState.shots = 0; gameState.goals = 0;
-            document.getElementById('shotCount').textContent = '0';
-            document.getElementById('goalCount').textContent = '0';
-            updateFOTotal();
-            updateGoalieStats();
+            
+            // Reset period goalie counters (but NOT cumulative totals)
+            gameState.periodShots = 0;
+            gameState.periodGoals = 0;
+            
+            // DON'T reset totalShots/totalGoals - goalie display stays cumulative
+            // DON'T reset shotCount/goalCount display - shows cumulative
+            
+            updateCumulativeFOStats();
         }
 
         async function saveGame() {
             if (!SCRIPT_URL) { showToast('Setup required', true); return; }
             showToast('Saving...');
+            
+            // Cumulative faceoffs from all periods + current
             let totalFo = { c1: { w: 0, l: 0 }, c2: { w: 0, l: 0 }, c3: { w: 0, l: 0 }, c4: { w: 0, l: 0 }, c5: { w: 0, l: 0 }, other: { w: 0, l: 0 } };
-            let totalShots = 0, totalGA = 0;
-            [1, 2, 3].forEach(p => { if (periodData[p]) { ['c1', 'c2', 'c3', 'other'].forEach(c => { totalFo[c].w += periodData[p].fo[c].w; totalFo[c].l += periodData[p].fo[c].l; }); totalShots += periodData[p].shots; totalGA += periodData[p].ga; } });
-            ['c1', 'c2', 'c3', 'other'].forEach(c => { totalFo[c].w += gameState.fo[c].w; totalFo[c].l += gameState.fo[c].l; });
-            totalShots += gameState.shots + gameState.goals; totalGA += gameState.goals;
+            [1, 2, 3].forEach(p => { 
+                if (periodData[p]) { 
+                    ['c1', 'c2', 'c3', 'other'].forEach(c => { 
+                        totalFo[c].w += periodData[p].fo[c].w; 
+                        totalFo[c].l += periodData[p].fo[c].l; 
+                    }); 
+                } 
+            });
+            ['c1', 'c2', 'c3', 'other'].forEach(c => { 
+                totalFo[c].w += gameState.fo[c].w; 
+                totalFo[c].l += gameState.fo[c].l; 
+            });
+            
+            // Use cumulative goalie totals
+            const totalShots = gameState.totalShots + gameState.totalGoals;
+            const totalGA = gameState.totalGoals;
+            
             const foParams = new URLSearchParams({ action: 'recordFOST', gameNum: gameState.gameNum });
-            ['c1', 'c2', 'c3', 'c4', 'c5', 'other'].forEach(c => { const w = totalFo[c].w, a = totalFo[c].w + totalFo[c].l; foParams.append(c + 'w', w > 0 ? w.toString() : ''); foParams.append(c + 'a', a > 0 ? a.toString() : ''); });
+            ['c1', 'c2', 'c3', 'c4', 'c5', 'other'].forEach(c => { 
+                const w = totalFo[c].w, a = totalFo[c].w + totalFo[c].l; 
+                foParams.append(c + 'w', w > 0 ? w.toString() : ''); 
+                foParams.append(c + 'a', a > 0 ? a.toString() : ''); 
+            });
             foParams.append('ppgf', ''); foParams.append('ppopp', ''); foParams.append('pkga', ''); foParams.append('pkopp', '');
             try { await fetch(SCRIPT_URL + '?' + foParams.toString(), { mode: 'no-cors' }); } catch (e) {}
-            const goalieParams = new URLSearchParams({ action: 'recordGoalie', gameNum: gameState.gameNum, goalie: gameState.goalie.value, ga: totalGA.toString(), shots: totalShots.toString(), result: '' });
+            
+            const goalieParams = new URLSearchParams({ 
+                action: 'recordGoalie', 
+                gameNum: gameState.gameNum, 
+                goalie: gameState.goalie.value, 
+                ga: totalGA.toString(), 
+                shots: totalShots.toString(), 
+                result: '' 
+            });
             try { await fetch(SCRIPT_URL + '?' + goalieParams.toString(), { mode: 'no-cors' }); } catch (e) {}
             showToast('Game ' + gameState.gameNum + ' Saved!');
         }
