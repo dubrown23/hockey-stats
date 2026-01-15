@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Live Game Logger</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #0f0f23;
+            --bg-card: #16213e;
+            --border-color: #4a4a6a;
+            --border-light: #3a3a5a;
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --text-dim: #6b7280;
+            --accent-gold: #fbbf24;
+            --accent-purple: #7c3aed;
+            --color-green: #4ade80;
+            --color-green-dark: #16a34a;
+            --color-red: #dc2626;
+            --color-red-light: #f87171;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        /* ============ MAIN CONTAINER ============ */
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 10px;
+            gap: 8px;
+        }
+
+        /* ============ HEADER BAR ============ */
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            padding: 10px 15px;
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .lock-indicator {
+            font-size: 24px;
+        }
+
+        .game-badge {
+            background: var(--accent-gold);
+            color: #000;
+            padding: 8px 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #d4a017;
+        }
+        .game-badge-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+        .game-badge-num {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .goalie-display {
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-gold);
+            border-radius: 10px;
+            padding: 8px 15px;
+            text-align: center;
+        }
+        .goalie-num {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-gold);
+            line-height: 1;
+        }
+        .goalie-name {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .header-right {
+            display: flex;
+            gap: 8px;
+        }
+
+        .setup-btn {
+            padding: 10px 15px;
+            background: var(--accent-purple);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .setup-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .setup-btn.locked {
+            background: var(--color-red);
+        }
+
+        /* ============ PERIOD SUMMARY BAR ============ */
+        .period-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 8px 12px;
+            flex-shrink: 0;
+        }
+
+        .period-summary {
+            text-align: center;
+            padding: 4px 12px;
+            border-radius: 6px;
+            background: var(--bg-card);
+            min-width: 80px;
+        }
+        .period-summary.active {
+            border: 2px solid var(--accent-gold);
+        }
+        .period-summary.saved {
+            border: 2px solid var(--color-green);
+        }
+        .period-label {
+            font-size: 10px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+        .period-data {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-secondary);
+        }
+        .period-data.empty {
+            color: var(--text-dim);
+        }
+
+        /* ============ FACEOFFS SECTION ============ */
+        .section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #60a5fa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .fo-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 10px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .fo-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .fo-card-label {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin-bottom: 8px;
+        }
+
+        .fo-tap-row {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .fo-tap-btn {
+            flex: 1;
+            min-height: 80px;
+            border: none;
+            border-radius: 14px;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s ease;
+        }
+        .fo-tap-btn:active {
+            transform: scale(0.95);
+        }
+        .fo-tap-btn.win {
+            background: var(--color-green-dark);
+        }
+        .fo-tap-btn.loss {
+            background: var(--color-red);
+        }
+
+        .fo-dec-row {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            margin-top: 6px;
+        }
+
+        .fo-dec-btn {
+            flex: 1;
+            height: 32px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            color: var(--text-dim);
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .fo-dec-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* FO Team Total */
+        .fo-total {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 8px;
+        }
+        .fo-total-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .fo-total-pct {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--color-green);
+        }
+        .fo-total-pct.purple { color: #a855f7; }
+        .fo-total-pct.green { color: var(--color-green); }
+        .fo-total-pct.yellow { color: var(--accent-gold); }
+        .fo-total-pct.red { color: var(--color-red-light); }
+        .fo-total-sub {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* ============ GOALIE SECTION ============ */
+        .goalie-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 10px;
+            flex-shrink: 0;
+        }
+
+        .goalie-tap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .goalie-tap-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .goalie-tap-btn {
+            width: 100%;
+            aspect-ratio: 1.5;
+            max-height: 120px;
+            border-radius: 14px;
+            border: 4px solid;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .goalie-tap-btn:active {
+            transform: scale(0.95);
+        }
+        .goalie-tap-btn.shot {
+            background: var(--color-green-dark);
+            border-color: var(--color-green);
+        }
+        .goalie-tap-btn.goal {
+            background: var(--color-red);
+            border-color: #f87171;
+        }
+        .goalie-tap-label {
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+        }
+        .goalie-tap-count {
+            font-size: 40px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .goalie-tap-dec {
+            width: 80%;
+            height: 32px;
+            margin-top: 6px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-dim);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .goalie-tap-dec:active {
+            transform: scale(0.95);
+        }
+
+        /* Goalie Stats Display */
+        .goalie-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 8px;
+        }
+        .goalie-stat-item {
+            text-align: center;
+        }
+        .goalie-stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--color-green);
+        }
+        .goalie-stat-value.ga { color: var(--color-red); }
+        .goalie-stat-value.svpct { color: var(--accent-gold); }
+        .goalie-stat-value.sv-purple { color: #a855f7; }
+        .goalie-stat-value.sv-good { color: var(--color-green); }
+        .goalie-stat-value.sv-warn { color: var(--accent-gold); }
+        .goalie-stat-value.sv-bad { color: #f87171; }
+        .goalie-stat-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* ============ SAVE BUTTONS ============ */
+        .save-bar {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .save-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .save-btn:active {
+            transform: scale(0.98);
+        }
+        .save-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .save-btn.period {
+            background: var(--accent-purple);
+            color: white;
+        }
+        .save-btn.game {
+            background: var(--color-green-dark);
+            color: white;
+        }
+
+        /* ============ TOAST ============ */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--color-green-dark);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: transform 0.3s ease;
+            z-index: 200;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.error {
+            background: var(--color-red);
+        }
+
+        /* ============ SETUP MODAL ============ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--accent-gold);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+        .modal-section label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+        }
+
+        .goalie-select-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .goalie-select-btn {
+            padding: 15px 10px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .goalie-select-btn.selected {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+        }
+        .goalie-select-btn .num {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--accent-gold);
+        }
+        .goalie-select-btn.selected .num {
+            color: white;
+        }
+        .goalie-select-btn .name {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+        .goalie-select-btn.selected .name {
+            color: #e5e7eb;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-btn.cancel {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+        .modal-btn.confirm {
+            background: var(--color-green-dark);
+            color: white;
+        }
+
+        /* URL Setup Modal */
+        .url-note {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* Loading state for setup */
+        .loading-spinner {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Bar -->
+        <div class="header-bar">
+            <div class="header-left">
+                <span class="lock-indicator" id="lockIndicator">🔓</span>
+                <div class="game-badge">
+                    <div class="game-badge-label">Game</div>
+                    <div class="game-badge-num" id="gameNum">1</div>
+                </div>
+                <div class="goalie-display">
+                    <div class="goalie-num" id="goalieNum">#31</div>
+                    <div class="goalie-name" id="goalieName">Tomasula</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="setup-btn" id="setupBtn" onclick="openSetup()">Setup</button>
+                <button class="setup-btn" id="lockBtn" onclick="toggleLock()">Lock</button>
+            </div>
+        </div>
+
+        <!-- Period Summary Bar -->
+        <div class="period-bar">
+            <div class="period-summary active" id="periodP1">
+                <div class="period-label">P1</div>
+                <div class="period-data empty" id="periodP1Data">--</div>
+            </div>
+            <div class="period-summary" id="periodP2">
+                <div class="period-label">P2</div>
+                <div class="period-data empty" id="periodP2Data">--</div>
+            </div>
+            <div class="period-summary" id="periodP3">
+                <div class="period-label">P3</div>
+                <div class="period-data empty" id="periodP3Data">--</div>
+            </div>
+            <div class="period-summary" id="periodGame">
+                <div class="period-label">Game</div>
+                <div class="period-data empty" id="periodGameData">--</div>
+            </div>
+        </div>
+
+        <!-- Faceoffs Section -->
+        <div class="fo-section">
+            <div class="section-title">Faceoffs</div>
+            <div class="fo-grid">
+                <!-- c1 -->
+                <div class="fo-card">
+                    <div class="fo-card-label" id="foLabel_c1">c1</div>
+                    <div class="fo-tap-row">
+                        <button class="fo-tap-btn win" id="foBtnW_c1" onclick="foTap('c1', 'w')">W</button>
+                        <button class="fo-tap-btn loss" id="foBtnL_c1" onclick="foTap('c1', 'l')">L</button>
+                    </div>
+                    <div class="fo-dec-row">
+                        <button class="fo-dec-btn" onclick="foDec('c1', 'w')">−</button>
+                        <button class="fo-dec-btn" onclick="foDec('c1', 'l')">−</button>
+                    </div>
+                </div>
+                <!-- c2 -->
+                <div class="fo-card">
+                    <div class="fo-card-label" id="foLabel_c2">c2</div>
+                    <div class="fo-tap-row">
+                        <button class="fo-tap-btn win" id="foBtnW_c2" onclick="foTap('c2', 'w')">W</button>
+                        <button class="fo-tap-btn loss" id="foBtnL_c2" onclick="foTap('c2', 'l')">L</button>
+                    </div>
+                    <div class="fo-dec-row">
+                        <button class="fo-dec-btn" onclick="foDec('c2', 'w')">−</button>
+                        <button class="fo-dec-btn" onclick="foDec('c2', 'l')">−</button>
+                    </div>
+                </div>
+                <!-- c3 -->
+                <div class="fo-card">
+                    <div class="fo-card-label" id="foLabel_c3">c3</div>
+                    <div class="fo-tap-row">
+                        <button class="fo-tap-btn win" id="foBtnW_c3" onclick="foTap('c3', 'w')">W</button>
+                        <button class="fo-tap-btn loss" id="foBtnL_c3" onclick="foTap('c3', 'l')">L</button>
+                    </div>
+                    <div class="fo-dec-row">
+                        <button class="fo-dec-btn" onclick="foDec('c3', 'w')">−</button>
+                        <button class="fo-dec-btn" onclick="foDec('c3', 'l')">−</button>
+                    </div>
+                </div>
+                <!-- OTHER -->
+                <div class="fo-card">
+                    <div class="fo-card-label" id="foLabel_other">OTHER</div>
+                    <div class="fo-tap-row">
+                        <button class="fo-tap-btn win" id="foBtnW_other" onclick="foTap('other', 'w')">W</button>
+                        <button class="fo-tap-btn loss" id="foBtnL_other" onclick="foTap('other', 'l')">L</button>
+                    </div>
+                    <div class="fo-dec-row">
+                        <button class="fo-dec-btn" onclick="foDec('other', 'w')">−</button>
+                        <button class="fo-dec-btn" onclick="foDec('other', 'l')">−</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Team Total -->
+            <div class="fo-total">
+                <span class="fo-total-label">Team</span>
+                <span class="fo-total-pct" id="foTeamPct">-</span>
+                <span class="fo-total-sub" id="foTeamSub">0W - 0L</span>
+            </div>
+        </div>
+
+        <!-- Goalie Section -->
+        <div class="goalie-section">
+            <div class="section-title">Goalie</div>
+            <div class="goalie-tap-grid">
+                <div class="goalie-tap-wrapper">
+                    <div class="goalie-tap-btn shot" onclick="tapShot()">
+                        <div class="goalie-tap-label">Shot</div>
+                        <div class="goalie-tap-count" id="shotCount">0</div>
+                    </div>
+                    <button class="goalie-tap-dec" onclick="undoShot()">− Undo</button>
+                </div>
+                <div class="goalie-tap-wrapper">
+                    <div class="goalie-tap-btn goal" onclick="tapGoal()">
+                        <div class="goalie-tap-label">Goal</div>
+                        <div class="goalie-tap-count" id="goalCount">0</div>
+                    </div>
+                    <button class="goalie-tap-dec" onclick="undoGoal()">− Undo</button>
+                </div>
+            </div>
+            <!-- Stats Display -->
+            <div class="goalie-stats">
+                <div class="goalie-stat-item">
+                    <div class="goalie-stat-value" id="statShots">-</div>
+                    <div class="goalie-stat-label">Shots</div>
+                </div>
+                <div class="goalie-stat-item">
+                    <div class="goalie-stat-value ga" id="statGA">-</div>
+                    <div class="goalie-stat-label">GA</div>
+                </div>
+                <div class="goalie-stat-item">
+                    <div class="goalie-stat-value svpct" id="statSVPct">-</div>
+                    <div class="goalie-stat-label">SV%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Buttons -->
+        <div class="save-bar">
+            <button class="save-btn period" id="btnSavePeriod" onclick="savePeriod()">Save Period</button>
+            <button class="save-btn game" id="btnSaveGame" onclick="saveGame()">Save Game</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Setup Modal -->
+    <div class="modal-overlay" id="setupModal">
+        <div class="modal">
+            <div class="modal-title">⚙️ Game Setup</div>
+            
+            <div class="modal-section">
+                <label>Apps Script URL</label>
+                <input type="text" class="modal-input" id="scriptUrl" placeholder="Paste Google Apps Script URL">
+                <div class="url-note">Same URL used in main stat entry app</div>
+            </div>
+
+            <div class="modal-section">
+                <label>Game Number</label>
+                <input type="number" class="modal-input" id="inputGameNum" min="1" max="50" value="1">
+            </div>
+
+            <div class="modal-section">
+                <label>Goalie</label>
+                <div class="goalie-select-grid">
+                    <div class="goalie-select-btn selected" id="setupGoalie31" onclick="selectSetupGoalie(31, 'Tomasula')">
+                        <div class="num">#31</div>
+                        <div class="name">Tomasula</div>
+                    </div>
+                    <div class="goalie-select-btn" id="setupGoalie41" onclick="selectSetupGoalie(41, 'Goodwin')">
+                        <div class="num">#41</div>
+                        <div class="name">Goodwin</div>
+                    </div>
+                    <div class="goalie-select-btn" id="setupGoalie67" onclick="selectSetupGoalie(67, 'Nease')">
+                        <div class="num">#67</div>
+                        <div class="name">Nease</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeSetup()">Cancel</button>
+                <button class="modal-btn confirm" onclick="confirmSetup()">Start Game</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ STATE ============
+        let SCRIPT_URL = localStorage.getItem('hockeyScriptUrl') || '';
+        let isLocked = false;
+        let currentPeriod = 1;
+
+        const gameState = {
+            gameNum: 1,
+            goalie: { num: 31, name: 'Tomasula', value: '#31 Tomasula' },
+            fo: {
+                c1: { w: 0, l: 0 },
+                c2: { w: 0, l: 0 },
+                c3: { w: 0, l: 0 },
+                other: { w: 0, l: 0 }
+            },
+            labels: { c1: 'c1', c2: 'c2', c3: 'c3', other: 'OTHER' },
+            shots: 0, // saves (shots that weren't goals)
+            goals: 0  // goals against
+        };
+
+        // Period snapshots for display
+        const periodData = {
+            1: null,
+            2: null,
+            3: null
+        };
+
+        // Running totals (accumulates across periods)
+        const gameTotals = {
+            fo: { c1: { w: 0, l: 0 }, c2: { w: 0, l: 0 }, c3: { w: 0, l: 0 }, other: { w: 0, l: 0 } },
+            shots: 0,
+            goals: 0
+        };
+
+        // ============ SETUP ============
+        const setupState = {
+            goalie: { num: 31, name: 'Tomasula' }
+        };
+
+        function openSetup() {
+            if (isLocked) return;
+            document.getElementById('setupModal').classList.add('active');
+            document.getElementById('scriptUrl').value = SCRIPT_URL;
+            document.getElementById('inputGameNum').value = gameState.gameNum;
+        }
+
+        function closeSetup() {
+            document.getElementById('setupModal').classList.remove('active');
+        }
+
+        function selectSetupGoalie(num, name) {
+            setupState.goalie = { num, name };
+            document.querySelectorAll('.goalie-select-btn').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById('setupGoalie' + num).classList.add('selected');
+        }
+
+        async function confirmSetup() {
+            const url = document.getElementById('scriptUrl').value.trim();
+            const gameNum = parseInt(document.getElementById('inputGameNum').value) || 1;
+
+            if (!url) {
+                showToast('Enter Apps Script URL', true);
+                return;
+            }
+
+            SCRIPT_URL = url;
+            localStorage.setItem('hockeyScriptUrl', url);
+
+            gameState.gameNum = gameNum;
+            gameState.goalie = {
+                num: setupState.goalie.num,
+                name: setupState.goalie.name,
+                value: '#' + setupState.goalie.num + ' ' + setupState.goalie.name
+            };
+
+            // Update UI
+            document.getElementById('gameNum').textContent = gameNum;
+            document.getElementById('goalieNum').textContent = '#' + setupState.goalie.num;
+            document.getElementById('goalieName').textContent = setupState.goalie.name;
+
+            // Load center labels from sheet
+            await loadCenterLabels();
+
+            closeSetup();
+            showToast('Game ' + gameNum + ' ready!');
+        }
+
+        async function loadCenterLabels() {
+            if (!SCRIPT_URL) return;
+
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getFOSTState&gameNum=' + gameState.gameNum + '&t=' + Date.now());
+                const data = await response.json();
+
+                if (data.labels) {
+                    gameState.labels = data.labels;
+                    document.getElementById('foLabel_c1').textContent = data.labels.c1 || 'c1';
+                    document.getElementById('foLabel_c2').textContent = data.labels.c2 || 'c2';
+                    document.getElementById('foLabel_c3').textContent = data.labels.c3 || 'c3';
+                    document.getElementById('foLabel_other').textContent = data.labels.other || 'OTHER';
+                }
+            } catch (error) {
+                console.error('Error loading labels:', error);
+            }
+        }
+
+        // ============ LOCK ============
+        function toggleLock() {
+            isLocked = !isLocked;
+            
+            document.getElementById('lockIndicator').textContent = isLocked ? '🔒' : '🔓';
+            document.getElementById('setupBtn').disabled = isLocked;
+            document.getElementById('lockBtn').textContent = isLocked ? 'Unlock' : 'Lock';
+            document.getElementById('lockBtn').classList.toggle('locked', isLocked);
+
+            showToast(isLocked ? 'Locked - Tap only mode' : 'Unlocked');
+        }
+
+        // ============ FACEOFFS ============
+        function foTap(center, type) {
+            if (type === 'w') {
+                gameState.fo[center].w++;
+                document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w;
+            } else {
+                gameState.fo[center].l++;
+                document.getElementById('foBtnL_' + center).textContent = gameState.fo[center].l;
+            }
+            updateFOTotal();
+            updatePeriodDisplay();
+        }
+
+        function foDec(center, type) {
+            if (type === 'w' && gameState.fo[center].w > 0) {
+                gameState.fo[center].w--;
+                document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w || 'W';
+            } else if (type === 'l' && gameState.fo[center].l > 0) {
+                gameState.fo[center].l--;
+                document.getElementById('foBtnL_' + center).textContent = gameState.fo[center].l || 'L';
+            }
+            updateFOTotal();
+            updatePeriodDisplay();
+        }
+
+        function updateFOTotal() {
+            let totalW = 0, totalL = 0;
+            ['c1', 'c2', 'c3', 'other'].forEach(c => {
+                totalW += gameState.fo[c].w;
+                totalL += gameState.fo[c].l;
+            });
+
+            const total = totalW + totalL;
+            const pctEl = document.getElementById('foTeamPct');
+            const subEl = document.getElementById('foTeamSub');
+
+            subEl.textContent = totalW + 'W - ' + totalL + 'L';
+
+            if (total === 0) {
+                pctEl.textContent = '-';
+                pctEl.className = 'fo-total-pct';
+            } else {
+                const pct = Math.round((totalW / total) * 100);
+                pctEl.textContent = pct + '%';
+                
+                pctEl.className = 'fo-total-pct';
+                if (pct > 55) pctEl.classList.add('purple');
+                else if (pct >= 50) pctEl.classList.add('green');
+                else if (pct >= 40) pctEl.classList.add('yellow');
+                else pctEl.classList.add('red');
+            }
+        }
+
+        // ============ GOALIE ============
+        function tapShot() {
+            gameState.shots++;
+            document.getElementById('shotCount').textContent = gameState.shots;
+            updateGoalieStats();
+            updatePeriodDisplay();
+        }
+
+        function tapGoal() {
+            gameState.goals++;
+            document.getElementById('goalCount').textContent = gameState.goals;
+            updateGoalieStats();
+            updatePeriodDisplay();
+        }
+
+        function undoShot() {
+            if (gameState.shots > 0) {
+                gameState.shots--;
+                document.getElementById('shotCount').textContent = gameState.shots;
+                updateGoalieStats();
+                updatePeriodDisplay();
+            }
+        }
+
+        function undoGoal() {
+            if (gameState.goals > 0) {
+                gameState.goals--;
+                document.getElementById('goalCount').textContent = gameState.goals;
+                updateGoalieStats();
+                updatePeriodDisplay();
+            }
+        }
+
+        function updateGoalieStats() {
+            const shots = gameState.shots + gameState.goals; // total shots faced
+            const ga = gameState.goals;
+            const saves = gameState.shots;
+
+            document.getElementById('statShots').textContent = shots || '-';
+            document.getElementById('statGA').textContent = ga || '-';
+
+            const svPctEl = document.getElementById('statSVPct');
+            if (shots === 0) {
+                svPctEl.textContent = '-';
+                svPctEl.className = 'goalie-stat-value svpct';
+            } else {
+                const svPct = saves / shots;
+                svPctEl.textContent = svPct.toFixed(3);
+                
+                svPctEl.className = 'goalie-stat-value';
+                if (svPct >= 0.950) svPctEl.classList.add('sv-purple');
+                else if (svPct >= 0.910) svPctEl.classList.add('sv-good');
+                else if (svPct >= 0.900) svPctEl.classList.add('sv-warn');
+                else svPctEl.classList.add('sv-bad');
+            }
+        }
+
+        // ============ PERIOD TRACKING ============
+        function updatePeriodDisplay() {
+            // Calculate current period totals
+            let foW = 0, foL = 0;
+            ['c1', 'c2', 'c3', 'other'].forEach(c => {
+                foW += gameState.fo[c].w;
+                foL += gameState.fo[c].l;
+            });
+            
+            const shots = gameState.shots + gameState.goals;
+            const ga = gameState.goals;
+
+            // Update current period display
+            const periodKey = 'periodP' + currentPeriod + 'Data';
+            const el = document.getElementById(periodKey);
+            if (el) {
+                el.textContent = `${foW}-${foL}, ${shots}/${ga}`;
+                el.classList.remove('empty');
+            }
+
+            // Update game totals display
+            updateGameTotalsDisplay();
+        }
+
+        function updateGameTotalsDisplay() {
+            // Calculate grand totals
+            let totalFoW = 0, totalFoL = 0, totalShots = 0, totalGA = 0;
+
+            // Add saved period data
+            [1, 2, 3].forEach(p => {
+                if (periodData[p]) {
+                    totalFoW += periodData[p].foW;
+                    totalFoL += periodData[p].foL;
+                    totalShots += periodData[p].shots;
+                    totalGA += periodData[p].ga;
+                }
+            });
+
+            // Add current (unsaved) period data
+            ['c1', 'c2', 'c3', 'other'].forEach(c => {
+                totalFoW += gameState.fo[c].w;
+                totalFoL += gameState.fo[c].l;
+            });
+            totalShots += gameState.shots + gameState.goals;
+            totalGA += gameState.goals;
+
+            const gameEl = document.getElementById('periodGameData');
+            if (totalFoW + totalFoL > 0 || totalShots > 0) {
+                gameEl.textContent = `${totalFoW}-${totalFoL}, ${totalShots}/${totalGA}`;
+                gameEl.classList.remove('empty');
+            }
+        }
+
+        // ============ SAVE PERIOD ============
+        function savePeriod() {
+            // Calculate current period totals
+            let foW = 0, foL = 0;
+            ['c1', 'c2', 'c3', 'other'].forEach(c => {
+                foW += gameState.fo[c].w;
+                foL += gameState.fo[c].l;
+            });
+
+            // Save to period data
+            periodData[currentPeriod] = {
+                foW: foW,
+                foL: foL,
+                fo: JSON.parse(JSON.stringify(gameState.fo)),
+                shots: gameState.shots + gameState.goals,
+                ga: gameState.goals,
+                saves: gameState.shots
+            };
+
+            // Mark period as saved
+            document.getElementById('periodP' + currentPeriod).classList.add('saved');
+            document.getElementById('periodP' + currentPeriod).classList.remove('active');
+
+            // Move to next period
+            if (currentPeriod < 3) {
+                currentPeriod++;
+                document.getElementById('periodP' + currentPeriod).classList.add('active');
+                
+                // Reset current counters for new period
+                resetCurrentCounters();
+            }
+
+            showToast('Period ' + (currentPeriod - 1) + ' saved!');
+            updateGameTotalsDisplay();
+        }
+
+        function resetCurrentCounters() {
+            // Reset faceoff counters
+            ['c1', 'c2', 'c3', 'other'].forEach(c => {
+                gameState.fo[c] = { w: 0, l: 0 };
+                document.getElementById('foBtnW_' + c).textContent = 'W';
+                document.getElementById('foBtnL_' + c).textContent = 'L';
+            });
+
+            // Reset goalie counters
+            gameState.shots = 0;
+            gameState.goals = 0;
+            document.getElementById('shotCount').textContent = '0';
+            document.getElementById('goalCount').textContent = '0';
+
+            // Reset displays
+            updateFOTotal();
+            updateGoalieStats();
+        }
+
+        // ============ SAVE GAME ============
+        async function saveGame() {
+            if (!SCRIPT_URL) {
+                showToast('Setup required', true);
+                return;
+            }
+
+            const btn = document.getElementById('btnSaveGame');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+
+            // Calculate grand totals
+            let totalFo = { c1: { w: 0, l: 0 }, c2: { w: 0, l: 0 }, c3: { w: 0, l: 0 }, c4: { w: 0, l: 0 }, c5: { w: 0, l: 0 }, other: { w: 0, l: 0 } };
+            let totalShots = 0, totalGA = 0;
+
+            // Add saved period data
+            [1, 2, 3].forEach(p => {
+                if (periodData[p]) {
+                    ['c1', 'c2', 'c3', 'other'].forEach(c => {
+                        totalFo[c].w += periodData[p].fo[c].w;
+                        totalFo[c].l += periodData[p].fo[c].l;
+                    });
+                    totalShots += periodData[p].shots;
+                    totalGA += periodData[p].ga;
+                }
+            });
+
+            // Add current (unsaved) period data
+            ['c1', 'c2', 'c3', 'other'].forEach(c => {
+                totalFo[c].w += gameState.fo[c].w;
+                totalFo[c].l += gameState.fo[c].l;
+            });
+            totalShots += gameState.shots + gameState.goals;
+            totalGA += gameState.goals;
+
+            // Save FO data
+            const foParams = new URLSearchParams({
+                action: 'recordFOST',
+                gameNum: gameState.gameNum
+            });
+
+            ['c1', 'c2', 'c3', 'c4', 'c5', 'other'].forEach(c => {
+                const w = totalFo[c].w;
+                const a = totalFo[c].w + totalFo[c].l;
+                foParams.append(c + 'w', w > 0 ? w.toString() : '');
+                foParams.append(c + 'a', a > 0 ? a.toString() : '');
+            });
+
+            // Add empty PP/PK (not tracked here)
+            foParams.append('ppgf', '');
+            foParams.append('ppopp', '');
+            foParams.append('pkga', '');
+            foParams.append('pkopp', '');
+
+            try {
+                await fetch(SCRIPT_URL + '?' + foParams.toString(), { mode: 'no-cors' });
+            } catch (e) {
+                console.log('FO save sent');
+            }
+
+            // Save Goalie data
+            const totalSaves = totalShots - totalGA;
+            const goalieParams = new URLSearchParams({
+                action: 'recordGoalie',
+                gameNum: gameState.gameNum,
+                goalie: gameState.goalie.value,
+                ga: totalGA.toString(),
+                shots: totalShots.toString(),
+                result: '' // Result set in post-game
+            });
+
+            try {
+                await fetch(SCRIPT_URL + '?' + goalieParams.toString(), { mode: 'no-cors' });
+            } catch (e) {
+                console.log('Goalie save sent');
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Save Game';
+            showToast('Game ' + gameState.gameNum + ' saved to sheet!');
+        }
+
+        // ============ TOAST ============
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast' + (isError ? ' error' : '');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // ============ INIT ============
+        function init() {
+            // Check for saved URL
+            if (!SCRIPT_URL) {
+                document.getElementById('setupModal').classList.add('active');
+            } else {
+                // Load center labels
+                loadCenterLabels();
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
