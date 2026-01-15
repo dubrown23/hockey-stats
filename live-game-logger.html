@@ -23,12 +23,10 @@
             --color-green-dark: #16a34a;
             --color-red: #dc2626;
             --color-red-light: #f87171;
-            
-            /* Center colors */
-            --c1-color: #3b82f6; /* Blue */
-            --c2-color: #a855f7; /* Purple */
-            --c3-color: #14b8a6; /* Teal */
-            --other-color: #f97316; /* Orange */
+            --c1-color: #3b82f6;
+            --c2-color: #a855f7;
+            --c3-color: #14b8a6;
+            --other-color: #f97316;
         }
 
         * { 
@@ -39,12 +37,7 @@
             user-select: none;
         }
         
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
+        html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -53,7 +46,6 @@
             font-size: 14px;
         }
 
-        /* ============ MAIN CONTAINER ============ */
         .container {
             display: flex;
             flex-direction: column;
@@ -62,7 +54,7 @@
             gap: 8px;
         }
 
-        /* ============ HEADER BAR ============ */
+        /* HEADER WITH PERIODS */
         .header-bar {
             display: flex;
             justify-content: space-between;
@@ -74,116 +66,62 @@
             flex-shrink: 0;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .lock-indicator {
-            font-size: 22px;
-        }
+        .header-left { display: flex; align-items: center; gap: 8px; }
+        .lock-indicator { font-size: 18px; }
 
         .game-badge {
             background: var(--accent-gold);
             color: #000;
-            padding: 6px 12px;
+            padding: 4px 10px;
             border-radius: 8px;
             text-align: center;
             border: 2px solid #d4a017;
         }
-        .game-badge-label {
-            font-size: 8px;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-        .game-badge-num {
-            font-size: 20px;
-            font-weight: bold;
-            line-height: 1;
-        }
+        .game-badge-label { font-size: 7px; text-transform: uppercase; opacity: 0.8; }
+        .game-badge-num { font-size: 18px; font-weight: bold; line-height: 1; }
 
         .goalie-display {
             background: var(--bg-secondary);
             border: 2px solid var(--accent-gold);
             border-radius: 8px;
-            padding: 6px 12px;
+            padding: 4px 10px;
             text-align: center;
         }
-        .goalie-num {
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--accent-gold);
-            line-height: 1;
-        }
-        .goalie-name {
-            font-size: 9px;
-            color: var(--text-muted);
-        }
+        .goalie-num { font-size: 18px; font-weight: bold; color: var(--accent-gold); line-height: 1; }
+        .goalie-name { font-size: 8px; color: var(--text-muted); }
 
-        .header-right {
-            display: flex;
-            gap: 6px;
+        .header-center { display: flex; gap: 5px; }
+
+        .period-summary {
+            text-align: center;
+            padding: 3px 6px;
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            min-width: 50px;
+            border: 1px solid var(--border-light);
         }
+        .period-summary.active { border: 2px solid var(--accent-gold); }
+        .period-summary.saved { border: 2px solid var(--color-green); }
+        .period-label { font-size: 7px; color: var(--text-dim); text-transform: uppercase; }
+        .period-data { font-size: 9px; font-weight: bold; color: var(--text-secondary); }
+        .period-data.empty { color: var(--text-dim); }
+
+        .header-right { display: flex; gap: 5px; }
 
         .setup-btn {
-            padding: 8px 12px;
+            padding: 6px 10px;
             background: var(--accent-purple);
             border: none;
             border-radius: 6px;
             color: white;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 10px;
             cursor: pointer;
         }
-        .setup-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .setup-btn.locked {
-            background: var(--color-red);
-        }
+        .setup-btn:disabled { opacity: 0.5; }
+        .setup-btn.locked { background: var(--color-red); }
 
-        /* ============ PERIOD SUMMARY BAR ============ */
-        .period-bar {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            padding: 6px 10px;
-            flex-shrink: 0;
-        }
-
-        .period-summary {
-            text-align: center;
-            padding: 4px 10px;
-            border-radius: 6px;
-            background: var(--bg-card);
-            min-width: 70px;
-        }
-        .period-summary.active {
-            border: 2px solid var(--accent-gold);
-        }
-        .period-summary.saved {
-            border: 2px solid var(--color-green);
-        }
-        .period-label {
-            font-size: 9px;
-            color: var(--text-dim);
-            text-transform: uppercase;
-        }
-        .period-data {
-            font-size: 11px;
-            font-weight: bold;
-            color: var(--text-secondary);
-        }
-        .period-data.empty {
-            color: var(--text-dim);
-        }
-
-        /* ============ FACEOFFS SECTION ============ */
+        /* FACEOFFS */
         .section-title {
             font-size: 10px;
             font-weight: bold;
@@ -223,54 +161,31 @@
             align-items: center;
         }
         
-        /* Color-coded center cards */
-        .fo-card.c1 {
-            border-color: var(--c1-color);
-            background: linear-gradient(180deg, rgba(59, 130, 246, 0.15) 0%, var(--bg-card) 100%);
-        }
+        .fo-card.c1 { border-color: var(--c1-color); background: linear-gradient(180deg, rgba(59, 130, 246, 0.15) 0%, var(--bg-card) 100%); }
         .fo-card.c1 .fo-card-label { color: var(--c1-color); }
-        
-        .fo-card.c2 {
-            border-color: var(--c2-color);
-            background: linear-gradient(180deg, rgba(168, 85, 247, 0.15) 0%, var(--bg-card) 100%);
-        }
+        .fo-card.c2 { border-color: var(--c2-color); background: linear-gradient(180deg, rgba(168, 85, 247, 0.15) 0%, var(--bg-card) 100%); }
         .fo-card.c2 .fo-card-label { color: var(--c2-color); }
-        
-        .fo-card.c3 {
-            border-color: var(--c3-color);
-            background: linear-gradient(180deg, rgba(20, 184, 166, 0.15) 0%, var(--bg-card) 100%);
-        }
+        .fo-card.c3 { border-color: var(--c3-color); background: linear-gradient(180deg, rgba(20, 184, 166, 0.15) 0%, var(--bg-card) 100%); }
         .fo-card.c3 .fo-card-label { color: var(--c3-color); }
-        
-        .fo-card.other {
-            border-color: var(--other-color);
-            background: linear-gradient(180deg, rgba(249, 115, 22, 0.15) 0%, var(--bg-card) 100%);
-        }
+        .fo-card.other { border-color: var(--other-color); background: linear-gradient(180deg, rgba(249, 115, 22, 0.15) 0%, var(--bg-card) 100%); }
         .fo-card.other .fo-card-label { color: var(--other-color); }
 
         .fo-card-label {
-            font-size: 28px;
+            font-size: 48px;
             font-weight: bold;
-            color: var(--accent-gold);
             margin-bottom: 6px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            line-height: 1;
         }
 
-        .fo-tap-row {
-            display: flex;
-            gap: 8px;
-            flex: 1;
-            width: 100%;
-            min-height: 0;
-        }
+        .fo-tap-row { display: flex; gap: 10px; width: 100%; flex: 1; }
 
         .fo-tap-btn {
             flex: 1;
-            min-height: 60px;
-            max-height: 80px;
+            min-height: 110px;
             border: none;
-            border-radius: 12px;
-            font-size: 32px;
+            border-radius: 14px;
+            font-size: 40px;
             font-weight: bold;
             color: white;
             cursor: pointer;
@@ -279,97 +194,83 @@
             justify-content: center;
             transition: transform 0.1s ease;
         }
-        .fo-tap-btn:active {
-            transform: scale(0.95);
-        }
-        .fo-tap-btn.win {
-            background: var(--color-green-dark);
-        }
-        .fo-tap-btn.loss {
-            background: var(--color-red);
-        }
+        .fo-tap-btn:active { transform: scale(0.95); }
+        .fo-tap-btn.win { background: var(--color-green-dark); }
+        .fo-tap-btn.loss { background: var(--color-red); }
 
-        .fo-dec-row {
-            display: flex;
-            gap: 8px;
-            width: 60%;
-            margin-top: 4px;
-            justify-content: center;
-        }
+        .fo-card-stats { display: flex; align-items: center; gap: 10px; margin-top: 6px; font-size: 15px; }
+        .fo-card-record { color: var(--text-secondary); font-weight: bold; }
+        .fo-card-pct { font-weight: bold; }
+        .fo-card-pct.purple { color: #a855f7; }
+        .fo-card-pct.green { color: var(--color-green); }
+        .fo-card-pct.yellow { color: var(--accent-gold); }
+        .fo-card-pct.red { color: var(--color-red-light); }
+
+        .fo-dec-row { display: flex; gap: 10px; margin-top: 4px; }
 
         .fo-dec-btn {
-            width: 40px;
-            height: 26px;
+            width: 36px;
+            height: 22px;
             border: 1px solid var(--border-color);
             border-radius: 4px;
             background: var(--bg-secondary);
             color: var(--text-dim);
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
         }
-        .fo-dec-btn:active {
-            transform: scale(0.95);
-        }
+        .fo-dec-btn:active { transform: scale(0.95); }
 
-        /* FO Team Total */
         .fo-total {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
             background: var(--bg-card);
             border: 2px solid var(--border-light);
             border-radius: 8px;
-            padding: 8px;
+            padding: 8px 12px;
             margin-top: 6px;
         }
-        .fo-total-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-        .fo-total-pct {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--color-green);
-        }
+        
+        .fo-total-team { display: flex; align-items: center; gap: 8px; }
+        .fo-total-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: bold; }
+        .fo-total-pct { font-size: 26px; font-weight: bold; }
         .fo-total-pct.purple { color: #a855f7; }
         .fo-total-pct.green { color: var(--color-green); }
         .fo-total-pct.yellow { color: var(--accent-gold); }
         .fo-total-pct.red { color: var(--color-red-light); }
-        .fo-total-sub {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
+        .fo-total-sub { font-size: 13px; color: var(--text-secondary); font-weight: bold; }
+        
+        .fo-individual-stats { display: flex; gap: 8px; }
+        .fo-ind-stat { text-align: center; padding: 4px 8px; border-radius: 6px; }
+        .fo-ind-stat.c1 { background: rgba(59, 130, 246, 0.2); border: 1px solid var(--c1-color); }
+        .fo-ind-stat.c2 { background: rgba(168, 85, 247, 0.2); border: 1px solid var(--c2-color); }
+        .fo-ind-stat.c3 { background: rgba(20, 184, 166, 0.2); border: 1px solid var(--c3-color); }
+        .fo-ind-stat.other { background: rgba(249, 115, 22, 0.2); border: 1px solid var(--other-color); }
+        .fo-ind-label { font-size: 9px; font-weight: bold; }
+        .fo-ind-stat.c1 .fo-ind-label { color: var(--c1-color); }
+        .fo-ind-stat.c2 .fo-ind-label { color: var(--c2-color); }
+        .fo-ind-stat.c3 .fo-ind-label { color: var(--c3-color); }
+        .fo-ind-stat.other .fo-ind-label { color: var(--other-color); }
+        .fo-ind-value { font-size: 12px; font-weight: bold; color: var(--text-primary); }
 
-        /* ============ GOALIE SECTION ============ */
+        /* GOALIE */
         .goalie-section {
             background: var(--bg-secondary);
             border: 1px solid var(--border-light);
             border-radius: 10px;
-            padding: 8px;
+            padding: 10px;
             flex-shrink: 0;
         }
 
-        .goalie-tap-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .goalie-tap-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        .goalie-tap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .goalie-tap-wrapper { display: flex; flex-direction: column; align-items: center; }
 
         .goalie-tap-btn {
             width: 100%;
-            height: 90px;
-            border-radius: 12px;
-            border: 3px solid;
+            height: 120px;
+            border-radius: 14px;
+            border: 4px solid;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -377,33 +278,16 @@
             cursor: pointer;
             transition: transform 0.1s ease;
         }
-        .goalie-tap-btn:active {
-            transform: scale(0.95);
-        }
-        .goalie-tap-btn.shot {
-            background: var(--color-green-dark);
-            border-color: var(--color-green);
-        }
-        .goalie-tap-btn.goal {
-            background: var(--color-red);
-            border-color: #f87171;
-        }
-        .goalie-tap-label {
-            font-size: 14px;
-            font-weight: bold;
-            color: white;
-            text-transform: uppercase;
-        }
-        .goalie-tap-count {
-            font-size: 36px;
-            font-weight: bold;
-            color: white;
-        }
+        .goalie-tap-btn:active { transform: scale(0.95); }
+        .goalie-tap-btn.shot { background: var(--color-green-dark); border-color: var(--color-green); }
+        .goalie-tap-btn.goal { background: var(--color-red); border-color: #f87171; }
+        .goalie-tap-label { font-size: 16px; font-weight: bold; color: white; text-transform: uppercase; }
+        .goalie-tap-count { font-size: 48px; font-weight: bold; color: white; }
 
         .goalie-tap-dec {
             width: 50%;
             height: 28px;
-            margin-top: 4px;
+            margin-top: 6px;
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             border-radius: 4px;
@@ -412,75 +296,47 @@
             font-weight: bold;
             cursor: pointer;
         }
-        .goalie-tap-dec:active {
-            transform: scale(0.95);
-        }
+        .goalie-tap-dec:active { transform: scale(0.95); }
 
-        /* Goalie Stats Display */
         .goalie-stats {
             display: flex;
             justify-content: center;
-            gap: 25px;
+            gap: 30px;
             background: var(--bg-card);
             border: 2px solid var(--border-light);
             border-radius: 8px;
-            padding: 8px;
-            margin-top: 6px;
+            padding: 10px;
+            margin-top: 8px;
         }
-        .goalie-stat-item {
-            text-align: center;
-        }
-        .goalie-stat-value {
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--color-green);
-        }
+        .goalie-stat-item { text-align: center; }
+        .goalie-stat-value { font-size: 28px; font-weight: bold; color: var(--color-green); }
         .goalie-stat-value.ga { color: var(--color-red); }
         .goalie-stat-value.svpct { color: var(--accent-gold); }
         .goalie-stat-value.sv-purple { color: #a855f7; }
         .goalie-stat-value.sv-good { color: var(--color-green); }
         .goalie-stat-value.sv-warn { color: var(--accent-gold); }
         .goalie-stat-value.sv-bad { color: #f87171; }
-        .goalie-stat-label {
-            font-size: 9px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
+        .goalie-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
 
-        /* ============ SAVE BUTTONS ============ */
-        .save-bar {
-            display: flex;
-            gap: 10px;
-            flex-shrink: 0;
-        }
+        /* SAVE BUTTONS */
+        .save-bar { display: flex; gap: 10px; flex-shrink: 0; }
 
         .save-btn {
             flex: 1;
-            padding: 14px;
+            padding: 16px;
             border: none;
             border-radius: 10px;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
         }
-        .save-btn:active {
-            transform: scale(0.98);
-        }
-        .save-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .save-btn.period {
-            background: var(--accent-purple);
-            color: white;
-        }
-        .save-btn.game {
-            background: var(--color-green-dark);
-            color: white;
-        }
+        .save-btn:active { transform: scale(0.98); }
+        .save-btn:disabled { opacity: 0.5; }
+        .save-btn.period { background: var(--accent-purple); color: white; }
+        .save-btn.game { background: var(--color-green-dark); color: white; }
 
-        /* ============ TOAST ============ */
+        /* TOAST */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -495,14 +351,10 @@
             transition: transform 0.3s ease;
             z-index: 200;
         }
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-        .toast.error {
-            background: var(--color-red);
-        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.error { background: var(--color-red); }
 
-        /* ============ SETUP MODAL ============ */
+        /* MODAL */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -513,9 +365,7 @@
             z-index: 100;
             padding: 20px;
         }
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
 
         .modal {
             background: var(--bg-card);
@@ -526,25 +376,9 @@
             max-width: 400px;
         }
 
-        .modal-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--accent-gold);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-section {
-            margin-bottom: 20px;
-        }
-
-        .modal-section label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
+        .modal-title { font-size: 18px; font-weight: bold; color: var(--accent-gold); text-align: center; margin-bottom: 20px; }
+        .modal-section { margin-bottom: 20px; }
+        .modal-section label { display: block; font-size: 12px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
 
         .modal-input {
             width: 100%;
@@ -555,16 +389,9 @@
             color: var(--text-primary);
             font-size: 16px;
         }
-        .modal-input:focus {
-            outline: none;
-            border-color: var(--accent-purple);
-        }
+        .modal-input:focus { outline: none; border-color: var(--accent-purple); }
 
-        .goalie-select-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
+        .goalie-select-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 
         .goalie-select-btn {
             padding: 15px 10px;
@@ -574,30 +401,13 @@
             cursor: pointer;
             text-align: center;
         }
-        .goalie-select-btn.selected {
-            background: var(--accent-purple);
-            border-color: var(--accent-purple);
-        }
-        .goalie-select-btn .num {
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--accent-gold);
-        }
-        .goalie-select-btn.selected .num {
-            color: white;
-        }
-        .goalie-select-btn .name {
-            font-size: 10px;
-            color: var(--text-muted);
-        }
-        .goalie-select-btn.selected .name {
-            color: #e5e7eb;
-        }
+        .goalie-select-btn.selected { background: var(--accent-purple); border-color: var(--accent-purple); }
+        .goalie-select-btn .num { font-size: 22px; font-weight: bold; color: var(--accent-gold); }
+        .goalie-select-btn.selected .num { color: white; }
+        .goalie-select-btn .name { font-size: 10px; color: var(--text-muted); }
+        .goalie-select-btn.selected .name { color: #e5e7eb; }
 
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-        }
+        .modal-buttons { display: flex; gap: 10px; }
 
         .modal-btn {
             flex: 1;
@@ -608,27 +418,14 @@
             font-weight: bold;
             cursor: pointer;
         }
-        .modal-btn.cancel {
-            background: var(--border-color);
-            color: var(--text-primary);
-        }
-        .modal-btn.confirm {
-            background: var(--color-green-dark);
-            color: white;
-        }
+        .modal-btn.cancel { background: var(--border-color); color: var(--text-primary); }
+        .modal-btn.confirm { background: var(--color-green-dark); color: white; }
 
-        /* URL Setup Modal */
-        .url-note {
-            font-size: 11px;
-            color: var(--text-dim);
-            margin-top: 8px;
-            text-align: center;
-        }
+        .url-note { font-size: 11px; color: var(--text-dim); margin-top: 8px; text-align: center; }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header Bar -->
         <div class="header-bar">
             <div class="header-left">
                 <span class="lock-indicator" id="lockIndicator">🔓</span>
@@ -641,78 +438,87 @@
                     <div class="goalie-name" id="goalieName">Tomasula</div>
                 </div>
             </div>
+            <div class="header-center">
+                <div class="period-summary active" id="periodP1">
+                    <div class="period-label">P1</div>
+                    <div class="period-data empty" id="periodP1Data">--</div>
+                </div>
+                <div class="period-summary" id="periodP2">
+                    <div class="period-label">P2</div>
+                    <div class="period-data empty" id="periodP2Data">--</div>
+                </div>
+                <div class="period-summary" id="periodP3">
+                    <div class="period-label">P3</div>
+                    <div class="period-data empty" id="periodP3Data">--</div>
+                </div>
+                <div class="period-summary" id="periodGame">
+                    <div class="period-label">Game</div>
+                    <div class="period-data empty" id="periodGameData">--</div>
+                </div>
+            </div>
             <div class="header-right">
                 <button class="setup-btn" id="setupBtn" onclick="openSetup()">Setup</button>
                 <button class="setup-btn" id="lockBtn" onclick="toggleLock()">Lock</button>
             </div>
         </div>
 
-        <!-- Period Summary Bar -->
-        <div class="period-bar">
-            <div class="period-summary active" id="periodP1">
-                <div class="period-label">P1</div>
-                <div class="period-data empty" id="periodP1Data">--</div>
-            </div>
-            <div class="period-summary" id="periodP2">
-                <div class="period-label">P2</div>
-                <div class="period-data empty" id="periodP2Data">--</div>
-            </div>
-            <div class="period-summary" id="periodP3">
-                <div class="period-label">P3</div>
-                <div class="period-data empty" id="periodP3Data">--</div>
-            </div>
-            <div class="period-summary" id="periodGame">
-                <div class="period-label">Game</div>
-                <div class="period-data empty" id="periodGameData">--</div>
-            </div>
-        </div>
-
-        <!-- Faceoffs Section -->
         <div class="fo-section">
             <div class="section-title">Faceoffs</div>
             <div class="fo-grid">
-                <!-- c1 - Blue -->
                 <div class="fo-card c1">
                     <div class="fo-card-label" id="foLabel_c1">c1</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_c1" onclick="foTap('c1', 'w')">W</button>
                         <button class="fo-tap-btn loss" id="foBtnL_c1" onclick="foTap('c1', 'l')">L</button>
                     </div>
+                    <div class="fo-card-stats">
+                        <span class="fo-card-record" id="foRecord_c1">0-0</span>
+                        <span class="fo-card-pct" id="foPct_c1">-</span>
+                    </div>
                     <div class="fo-dec-row">
                         <button class="fo-dec-btn" onclick="foDec('c1', 'w')">−</button>
                         <button class="fo-dec-btn" onclick="foDec('c1', 'l')">−</button>
                     </div>
                 </div>
-                <!-- c2 - Purple -->
                 <div class="fo-card c2">
                     <div class="fo-card-label" id="foLabel_c2">c2</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_c2" onclick="foTap('c2', 'w')">W</button>
                         <button class="fo-tap-btn loss" id="foBtnL_c2" onclick="foTap('c2', 'l')">L</button>
                     </div>
+                    <div class="fo-card-stats">
+                        <span class="fo-card-record" id="foRecord_c2">0-0</span>
+                        <span class="fo-card-pct" id="foPct_c2">-</span>
+                    </div>
                     <div class="fo-dec-row">
                         <button class="fo-dec-btn" onclick="foDec('c2', 'w')">−</button>
                         <button class="fo-dec-btn" onclick="foDec('c2', 'l')">−</button>
                     </div>
                 </div>
-                <!-- c3 - Teal -->
                 <div class="fo-card c3">
                     <div class="fo-card-label" id="foLabel_c3">c3</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_c3" onclick="foTap('c3', 'w')">W</button>
                         <button class="fo-tap-btn loss" id="foBtnL_c3" onclick="foTap('c3', 'l')">L</button>
                     </div>
+                    <div class="fo-card-stats">
+                        <span class="fo-card-record" id="foRecord_c3">0-0</span>
+                        <span class="fo-card-pct" id="foPct_c3">-</span>
+                    </div>
                     <div class="fo-dec-row">
                         <button class="fo-dec-btn" onclick="foDec('c3', 'w')">−</button>
                         <button class="fo-dec-btn" onclick="foDec('c3', 'l')">−</button>
                     </div>
                 </div>
-                <!-- OTHER - Orange -->
                 <div class="fo-card other">
                     <div class="fo-card-label" id="foLabel_other">OTHER</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_other" onclick="foTap('other', 'w')">W</button>
                         <button class="fo-tap-btn loss" id="foBtnL_other" onclick="foTap('other', 'l')">L</button>
+                    </div>
+                    <div class="fo-card-stats">
+                        <span class="fo-card-record" id="foRecord_other">0-0</span>
+                        <span class="fo-card-pct" id="foPct_other">-</span>
                     </div>
                     <div class="fo-dec-row">
                         <button class="fo-dec-btn" onclick="foDec('other', 'w')">−</button>
@@ -720,15 +526,33 @@
                     </div>
                 </div>
             </div>
-            <!-- Team Total -->
             <div class="fo-total">
-                <span class="fo-total-label">Team</span>
-                <span class="fo-total-pct" id="foTeamPct">-</span>
-                <span class="fo-total-sub" id="foTeamSub">0W - 0L</span>
+                <div class="fo-total-team">
+                    <span class="fo-total-label">Team</span>
+                    <span class="fo-total-pct" id="foTeamPct">-</span>
+                    <span class="fo-total-sub" id="foTeamSub">0W - 0L</span>
+                </div>
+                <div class="fo-individual-stats">
+                    <div class="fo-ind-stat c1">
+                        <div class="fo-ind-label" id="foIndLabel_c1">c1</div>
+                        <div class="fo-ind-value" id="foIndValue_c1">-</div>
+                    </div>
+                    <div class="fo-ind-stat c2">
+                        <div class="fo-ind-label" id="foIndLabel_c2">c2</div>
+                        <div class="fo-ind-value" id="foIndValue_c2">-</div>
+                    </div>
+                    <div class="fo-ind-stat c3">
+                        <div class="fo-ind-label" id="foIndLabel_c3">c3</div>
+                        <div class="fo-ind-value" id="foIndValue_c3">-</div>
+                    </div>
+                    <div class="fo-ind-stat other">
+                        <div class="fo-ind-label">OTH</div>
+                        <div class="fo-ind-value" id="foIndValue_other">-</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Goalie Section -->
         <div class="goalie-section">
             <div class="section-title">Goalie</div>
             <div class="goalie-tap-grid">
@@ -747,7 +571,6 @@
                     <button class="goalie-tap-dec" onclick="undoGoal()">− Undo</button>
                 </div>
             </div>
-            <!-- Stats Display -->
             <div class="goalie-stats">
                 <div class="goalie-stat-item">
                     <div class="goalie-stat-value" id="statShots">-</div>
@@ -764,32 +587,26 @@
             </div>
         </div>
 
-        <!-- Save Buttons -->
         <div class="save-bar">
             <button class="save-btn period" id="btnSavePeriod" onclick="savePeriod()">Save Period</button>
             <button class="save-btn game" id="btnSaveGame" onclick="saveGame()">Save Game</button>
         </div>
     </div>
 
-    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
-    <!-- Setup Modal -->
     <div class="modal-overlay" id="setupModal">
         <div class="modal">
             <div class="modal-title">⚙️ Game Setup</div>
-            
             <div class="modal-section">
                 <label>Apps Script URL</label>
                 <input type="text" class="modal-input" id="scriptUrl" placeholder="Paste Google Apps Script URL">
                 <div class="url-note">Same URL used in main stat entry app</div>
             </div>
-
             <div class="modal-section">
                 <label>Game Number</label>
                 <input type="number" class="modal-input" id="inputGameNum" min="1" max="50" value="1">
             </div>
-
             <div class="modal-section">
                 <label>Goalie</label>
                 <div class="goalie-select-grid">
@@ -807,7 +624,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="modal-buttons">
                 <button class="modal-btn cancel" onclick="closeSetup()">Cancel</button>
                 <button class="modal-btn confirm" onclick="confirmSetup()">Start Game</button>
@@ -816,7 +632,6 @@
     </div>
 
     <script>
-        // ============ STATE ============
         let SCRIPT_URL = localStorage.getItem('hockeyScriptUrl') || '';
         let isLocked = false;
         let currentPeriod = 1;
@@ -824,35 +639,14 @@
         const gameState = {
             gameNum: 1,
             goalie: { num: 31, name: 'Tomasula', value: '#31 Tomasula' },
-            fo: {
-                c1: { w: 0, l: 0 },
-                c2: { w: 0, l: 0 },
-                c3: { w: 0, l: 0 },
-                other: { w: 0, l: 0 }
-            },
-            labels: { c1: 'c1', c2: 'c2', c3: 'c3', other: 'OTHER' },
-            shots: 0, // saves (shots that weren't goals)
-            goals: 0  // goals against
-        };
-
-        // Period snapshots for display
-        const periodData = {
-            1: null,
-            2: null,
-            3: null
-        };
-
-        // Running totals (accumulates across periods)
-        const gameTotals = {
             fo: { c1: { w: 0, l: 0 }, c2: { w: 0, l: 0 }, c3: { w: 0, l: 0 }, other: { w: 0, l: 0 } },
+            labels: { c1: 'c1', c2: 'c2', c3: 'c3', other: 'OTHER' },
             shots: 0,
             goals: 0
         };
 
-        // ============ SETUP ============
-        const setupState = {
-            goalie: { num: 31, name: 'Tomasula' }
-        };
+        const periodData = { 1: null, 2: null, 3: null };
+        const setupState = { goalie: { num: 31, name: 'Tomasula' } };
 
         function openSetup() {
             if (isLocked) return;
@@ -861,9 +655,7 @@
             document.getElementById('inputGameNum').value = gameState.gameNum;
         }
 
-        function closeSetup() {
-            document.getElementById('setupModal').classList.remove('active');
-        }
+        function closeSetup() { document.getElementById('setupModal').classList.remove('active'); }
 
         function selectSetupGoalie(num, name) {
             setupState.goalie = { num, name };
@@ -874,110 +666,88 @@
         async function confirmSetup() {
             const url = document.getElementById('scriptUrl').value.trim();
             const gameNum = parseInt(document.getElementById('inputGameNum').value) || 1;
-
-            if (!url) {
-                showToast('Enter Apps Script URL', true);
-                return;
-            }
-
+            if (!url) { showToast('Enter Apps Script URL', true); return; }
             SCRIPT_URL = url;
             localStorage.setItem('hockeyScriptUrl', url);
-
             gameState.gameNum = gameNum;
-            gameState.goalie = {
-                num: setupState.goalie.num,
-                name: setupState.goalie.name,
-                value: '#' + setupState.goalie.num + ' ' + setupState.goalie.name
-            };
-
-            // Update UI
+            gameState.goalie = { num: setupState.goalie.num, name: setupState.goalie.name, value: '#' + setupState.goalie.num + ' ' + setupState.goalie.name };
             document.getElementById('gameNum').textContent = gameNum;
             document.getElementById('goalieNum').textContent = '#' + setupState.goalie.num;
             document.getElementById('goalieName').textContent = setupState.goalie.name;
-
-            // Load center labels from sheet
             await loadCenterLabels();
-
             closeSetup();
             showToast('Game ' + gameNum + ' ready!');
         }
 
         async function loadCenterLabels() {
             if (!SCRIPT_URL) return;
-
             try {
                 const response = await fetch(SCRIPT_URL + '?action=getFOSTState&gameNum=' + gameState.gameNum + '&t=' + Date.now());
                 const data = await response.json();
-
                 if (data.labels) {
                     gameState.labels = data.labels;
-                    document.getElementById('foLabel_c1').textContent = data.labels.c1 || 'c1';
-                    document.getElementById('foLabel_c2').textContent = data.labels.c2 || 'c2';
-                    document.getElementById('foLabel_c3').textContent = data.labels.c3 || 'c3';
+                    ['c1', 'c2', 'c3'].forEach(c => {
+                        document.getElementById('foLabel_' + c).textContent = data.labels[c] || c;
+                        document.getElementById('foIndLabel_' + c).textContent = data.labels[c] || c;
+                    });
                     document.getElementById('foLabel_other').textContent = data.labels.other || 'OTHER';
                 }
-            } catch (error) {
-                console.error('Error loading labels:', error);
-            }
+            } catch (e) { console.error('Error loading labels:', e); }
         }
 
-        // ============ LOCK ============
         function toggleLock() {
             isLocked = !isLocked;
-            
             document.getElementById('lockIndicator').textContent = isLocked ? '🔒' : '🔓';
             document.getElementById('setupBtn').disabled = isLocked;
             document.getElementById('lockBtn').textContent = isLocked ? 'Unlock' : 'Lock';
             document.getElementById('lockBtn').classList.toggle('locked', isLocked);
-
             showToast(isLocked ? 'Locked - Tap only mode' : 'Unlocked');
         }
 
-        // ============ FACEOFFS ============
         function foTap(center, type) {
-            if (type === 'w') {
-                gameState.fo[center].w++;
-                document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w;
-            } else {
-                gameState.fo[center].l++;
-                document.getElementById('foBtnL_' + center).textContent = gameState.fo[center].l;
-            }
+            if (type === 'w') { gameState.fo[center].w++; document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w; }
+            else { gameState.fo[center].l++; document.getElementById('foBtnL_' + center).textContent = gameState.fo[center].l; }
+            updateFOStats(center);
             updateFOTotal();
             updatePeriodDisplay();
         }
 
         function foDec(center, type) {
-            if (type === 'w' && gameState.fo[center].w > 0) {
-                gameState.fo[center].w--;
-                document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w || 'W';
-            } else if (type === 'l' && gameState.fo[center].l > 0) {
-                gameState.fo[center].l--;
-                document.getElementById('foBtnL_' + center).textContent = gameState.fo[center].l || 'L';
-            }
+            if (type === 'w' && gameState.fo[center].w > 0) { gameState.fo[center].w--; document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w || 'W'; }
+            else if (type === 'l' && gameState.fo[center].l > 0) { gameState.fo[center].l--; document.getElementById('foBtnL_' + center).textContent = gameState.fo[center].l || 'L'; }
+            updateFOStats(center);
             updateFOTotal();
             updatePeriodDisplay();
         }
 
+        function updateFOStats(center) {
+            const w = gameState.fo[center].w, l = gameState.fo[center].l, total = w + l;
+            document.getElementById('foRecord_' + center).textContent = w + '-' + l;
+            const pctEl = document.getElementById('foPct_' + center);
+            const indEl = document.getElementById('foIndValue_' + center);
+            if (total === 0) { pctEl.textContent = '-'; pctEl.className = 'fo-card-pct'; indEl.textContent = '-'; }
+            else {
+                const pct = Math.round((w / total) * 100);
+                pctEl.textContent = pct + '%';
+                indEl.textContent = pct + '%';
+                pctEl.className = 'fo-card-pct';
+                if (pct > 55) pctEl.classList.add('purple');
+                else if (pct >= 50) pctEl.classList.add('green');
+                else if (pct >= 40) pctEl.classList.add('yellow');
+                else pctEl.classList.add('red');
+            }
+        }
+
         function updateFOTotal() {
             let totalW = 0, totalL = 0;
-            ['c1', 'c2', 'c3', 'other'].forEach(c => {
-                totalW += gameState.fo[c].w;
-                totalL += gameState.fo[c].l;
-            });
-
+            ['c1', 'c2', 'c3', 'other'].forEach(c => { totalW += gameState.fo[c].w; totalL += gameState.fo[c].l; });
             const total = totalW + totalL;
             const pctEl = document.getElementById('foTeamPct');
-            const subEl = document.getElementById('foTeamSub');
-
-            subEl.textContent = totalW + 'W - ' + totalL + 'L';
-
-            if (total === 0) {
-                pctEl.textContent = '-';
-                pctEl.className = 'fo-total-pct';
-            } else {
+            document.getElementById('foTeamSub').textContent = totalW + 'W - ' + totalL + 'L';
+            if (total === 0) { pctEl.textContent = '-'; pctEl.className = 'fo-total-pct'; }
+            else {
                 const pct = Math.round((totalW / total) * 100);
                 pctEl.textContent = pct + '%';
-                
                 pctEl.className = 'fo-total-pct';
                 if (pct > 55) pctEl.classList.add('purple');
                 else if (pct >= 50) pctEl.classList.add('green');
@@ -986,55 +756,20 @@
             }
         }
 
-        // ============ GOALIE ============
-        function tapShot() {
-            gameState.shots++;
-            document.getElementById('shotCount').textContent = gameState.shots;
-            updateGoalieStats();
-            updatePeriodDisplay();
-        }
-
-        function tapGoal() {
-            gameState.goals++;
-            document.getElementById('goalCount').textContent = gameState.goals;
-            updateGoalieStats();
-            updatePeriodDisplay();
-        }
-
-        function undoShot() {
-            if (gameState.shots > 0) {
-                gameState.shots--;
-                document.getElementById('shotCount').textContent = gameState.shots;
-                updateGoalieStats();
-                updatePeriodDisplay();
-            }
-        }
-
-        function undoGoal() {
-            if (gameState.goals > 0) {
-                gameState.goals--;
-                document.getElementById('goalCount').textContent = gameState.goals;
-                updateGoalieStats();
-                updatePeriodDisplay();
-            }
-        }
+        function tapShot() { gameState.shots++; document.getElementById('shotCount').textContent = gameState.shots; updateGoalieStats(); updatePeriodDisplay(); }
+        function tapGoal() { gameState.goals++; document.getElementById('goalCount').textContent = gameState.goals; updateGoalieStats(); updatePeriodDisplay(); }
+        function undoShot() { if (gameState.shots > 0) { gameState.shots--; document.getElementById('shotCount').textContent = gameState.shots; updateGoalieStats(); updatePeriodDisplay(); } }
+        function undoGoal() { if (gameState.goals > 0) { gameState.goals--; document.getElementById('goalCount').textContent = gameState.goals; updateGoalieStats(); updatePeriodDisplay(); } }
 
         function updateGoalieStats() {
-            const shots = gameState.shots + gameState.goals; // total shots faced
-            const ga = gameState.goals;
-            const saves = gameState.shots;
-
+            const shots = gameState.shots + gameState.goals, ga = gameState.goals, saves = gameState.shots;
             document.getElementById('statShots').textContent = shots || '-';
             document.getElementById('statGA').textContent = ga || '-';
-
             const svPctEl = document.getElementById('statSVPct');
-            if (shots === 0) {
-                svPctEl.textContent = '-';
-                svPctEl.className = 'goalie-stat-value svpct';
-            } else {
+            if (shots === 0) { svPctEl.textContent = '-'; svPctEl.className = 'goalie-stat-value svpct'; }
+            else {
                 const svPct = saves / shots;
                 svPctEl.textContent = svPct.toFixed(3);
-                
                 svPctEl.className = 'goalie-stat-value';
                 if (svPct >= 0.950) svPctEl.classList.add('sv-purple');
                 else if (svPct >= 0.910) svPctEl.classList.add('sv-good');
@@ -1043,197 +778,72 @@
             }
         }
 
-        // ============ PERIOD TRACKING ============
         function updatePeriodDisplay() {
-            // Calculate current period totals
             let foW = 0, foL = 0;
-            ['c1', 'c2', 'c3', 'other'].forEach(c => {
-                foW += gameState.fo[c].w;
-                foL += gameState.fo[c].l;
-            });
-            
-            const shots = gameState.shots + gameState.goals;
-            const ga = gameState.goals;
-
-            // Update current period display
-            const periodKey = 'periodP' + currentPeriod + 'Data';
-            const el = document.getElementById(periodKey);
-            if (el) {
-                el.textContent = `${foW}-${foL}, ${shots}/${ga}`;
-                el.classList.remove('empty');
-            }
-
-            // Update game totals display
+            ['c1', 'c2', 'c3', 'other'].forEach(c => { foW += gameState.fo[c].w; foL += gameState.fo[c].l; });
+            const shots = gameState.shots + gameState.goals, ga = gameState.goals;
+            const el = document.getElementById('periodP' + currentPeriod + 'Data');
+            if (el) { el.textContent = `${foW}-${foL}, ${shots}/${ga}`; el.classList.remove('empty'); }
             updateGameTotalsDisplay();
         }
 
         function updateGameTotalsDisplay() {
-            // Calculate grand totals
             let totalFoW = 0, totalFoL = 0, totalShots = 0, totalGA = 0;
-
-            // Add saved period data
-            [1, 2, 3].forEach(p => {
-                if (periodData[p]) {
-                    totalFoW += periodData[p].foW;
-                    totalFoL += periodData[p].foL;
-                    totalShots += periodData[p].shots;
-                    totalGA += periodData[p].ga;
-                }
-            });
-
-            // Add current (unsaved) period data
-            ['c1', 'c2', 'c3', 'other'].forEach(c => {
-                totalFoW += gameState.fo[c].w;
-                totalFoL += gameState.fo[c].l;
-            });
+            [1, 2, 3].forEach(p => { if (periodData[p]) { totalFoW += periodData[p].foW; totalFoL += periodData[p].foL; totalShots += periodData[p].shots; totalGA += periodData[p].ga; } });
+            ['c1', 'c2', 'c3', 'other'].forEach(c => { totalFoW += gameState.fo[c].w; totalFoL += gameState.fo[c].l; });
             totalShots += gameState.shots + gameState.goals;
             totalGA += gameState.goals;
-
             const gameEl = document.getElementById('periodGameData');
-            if (totalFoW + totalFoL > 0 || totalShots > 0) {
-                gameEl.textContent = `${totalFoW}-${totalFoL}, ${totalShots}/${totalGA}`;
-                gameEl.classList.remove('empty');
-            }
+            if (totalFoW + totalFoL > 0 || totalShots > 0) { gameEl.textContent = `${totalFoW}-${totalFoL}, ${totalShots}/${totalGA}`; gameEl.classList.remove('empty'); }
         }
 
-        // ============ SAVE PERIOD ============
         function savePeriod() {
-            // Calculate current period totals
             let foW = 0, foL = 0;
-            ['c1', 'c2', 'c3', 'other'].forEach(c => {
-                foW += gameState.fo[c].w;
-                foL += gameState.fo[c].l;
-            });
-
-            // Save to period data
-            periodData[currentPeriod] = {
-                foW: foW,
-                foL: foL,
-                fo: JSON.parse(JSON.stringify(gameState.fo)),
-                shots: gameState.shots + gameState.goals,
-                ga: gameState.goals,
-                saves: gameState.shots
-            };
-
-            // Mark period as saved
+            ['c1', 'c2', 'c3', 'other'].forEach(c => { foW += gameState.fo[c].w; foL += gameState.fo[c].l; });
+            periodData[currentPeriod] = { foW, foL, fo: JSON.parse(JSON.stringify(gameState.fo)), shots: gameState.shots + gameState.goals, ga: gameState.goals, saves: gameState.shots };
             document.getElementById('periodP' + currentPeriod).classList.add('saved');
             document.getElementById('periodP' + currentPeriod).classList.remove('active');
-
-            // Move to next period
-            if (currentPeriod < 3) {
-                currentPeriod++;
-                document.getElementById('periodP' + currentPeriod).classList.add('active');
-                
-                // Reset current counters for new period
-                resetCurrentCounters();
-            }
-
+            if (currentPeriod < 3) { currentPeriod++; document.getElementById('periodP' + currentPeriod).classList.add('active'); resetCurrentCounters(); }
             showToast('Period ' + (currentPeriod - 1) + ' saved!');
             updateGameTotalsDisplay();
         }
 
         function resetCurrentCounters() {
-            // Reset faceoff counters
             ['c1', 'c2', 'c3', 'other'].forEach(c => {
                 gameState.fo[c] = { w: 0, l: 0 };
                 document.getElementById('foBtnW_' + c).textContent = 'W';
                 document.getElementById('foBtnL_' + c).textContent = 'L';
+                document.getElementById('foRecord_' + c).textContent = '0-0';
+                document.getElementById('foPct_' + c).textContent = '-';
+                document.getElementById('foPct_' + c).className = 'fo-card-pct';
+                document.getElementById('foIndValue_' + c).textContent = '-';
             });
-
-            // Reset goalie counters
-            gameState.shots = 0;
-            gameState.goals = 0;
+            gameState.shots = 0; gameState.goals = 0;
             document.getElementById('shotCount').textContent = '0';
             document.getElementById('goalCount').textContent = '0';
-
-            // Reset displays
             updateFOTotal();
             updateGoalieStats();
         }
 
-        // ============ SAVE GAME ============
         async function saveGame() {
-            if (!SCRIPT_URL) {
-                showToast('Setup required', true);
-                return;
-            }
-
+            if (!SCRIPT_URL) { showToast('Setup required', true); return; }
             const btn = document.getElementById('btnSaveGame');
-            btn.disabled = true;
-            btn.textContent = 'Saving...';
-
-            // Calculate grand totals
+            btn.disabled = true; btn.textContent = 'Saving...';
             let totalFo = { c1: { w: 0, l: 0 }, c2: { w: 0, l: 0 }, c3: { w: 0, l: 0 }, c4: { w: 0, l: 0 }, c5: { w: 0, l: 0 }, other: { w: 0, l: 0 } };
             let totalShots = 0, totalGA = 0;
-
-            // Add saved period data
-            [1, 2, 3].forEach(p => {
-                if (periodData[p]) {
-                    ['c1', 'c2', 'c3', 'other'].forEach(c => {
-                        totalFo[c].w += periodData[p].fo[c].w;
-                        totalFo[c].l += periodData[p].fo[c].l;
-                    });
-                    totalShots += periodData[p].shots;
-                    totalGA += periodData[p].ga;
-                }
-            });
-
-            // Add current (unsaved) period data
-            ['c1', 'c2', 'c3', 'other'].forEach(c => {
-                totalFo[c].w += gameState.fo[c].w;
-                totalFo[c].l += gameState.fo[c].l;
-            });
-            totalShots += gameState.shots + gameState.goals;
-            totalGA += gameState.goals;
-
-            // Save FO data
-            const foParams = new URLSearchParams({
-                action: 'recordFOST',
-                gameNum: gameState.gameNum
-            });
-
-            ['c1', 'c2', 'c3', 'c4', 'c5', 'other'].forEach(c => {
-                const w = totalFo[c].w;
-                const a = totalFo[c].w + totalFo[c].l;
-                foParams.append(c + 'w', w > 0 ? w.toString() : '');
-                foParams.append(c + 'a', a > 0 ? a.toString() : '');
-            });
-
-            // Add empty PP/PK (not tracked here)
-            foParams.append('ppgf', '');
-            foParams.append('ppopp', '');
-            foParams.append('pkga', '');
-            foParams.append('pkopp', '');
-
-            try {
-                await fetch(SCRIPT_URL + '?' + foParams.toString(), { mode: 'no-cors' });
-            } catch (e) {
-                console.log('FO save sent');
-            }
-
-            // Save Goalie data
-            const totalSaves = totalShots - totalGA;
-            const goalieParams = new URLSearchParams({
-                action: 'recordGoalie',
-                gameNum: gameState.gameNum,
-                goalie: gameState.goalie.value,
-                ga: totalGA.toString(),
-                shots: totalShots.toString(),
-                result: '' // Result set in post-game
-            });
-
-            try {
-                await fetch(SCRIPT_URL + '?' + goalieParams.toString(), { mode: 'no-cors' });
-            } catch (e) {
-                console.log('Goalie save sent');
-            }
-
-            btn.disabled = false;
-            btn.textContent = 'Save Game';
+            [1, 2, 3].forEach(p => { if (periodData[p]) { ['c1', 'c2', 'c3', 'other'].forEach(c => { totalFo[c].w += periodData[p].fo[c].w; totalFo[c].l += periodData[p].fo[c].l; }); totalShots += periodData[p].shots; totalGA += periodData[p].ga; } });
+            ['c1', 'c2', 'c3', 'other'].forEach(c => { totalFo[c].w += gameState.fo[c].w; totalFo[c].l += gameState.fo[c].l; });
+            totalShots += gameState.shots + gameState.goals; totalGA += gameState.goals;
+            const foParams = new URLSearchParams({ action: 'recordFOST', gameNum: gameState.gameNum });
+            ['c1', 'c2', 'c3', 'c4', 'c5', 'other'].forEach(c => { const w = totalFo[c].w, a = totalFo[c].w + totalFo[c].l; foParams.append(c + 'w', w > 0 ? w.toString() : ''); foParams.append(c + 'a', a > 0 ? a.toString() : ''); });
+            foParams.append('ppgf', ''); foParams.append('ppopp', ''); foParams.append('pkga', ''); foParams.append('pkopp', '');
+            try { await fetch(SCRIPT_URL + '?' + foParams.toString(), { mode: 'no-cors' }); } catch (e) {}
+            const goalieParams = new URLSearchParams({ action: 'recordGoalie', gameNum: gameState.gameNum, goalie: gameState.goalie.value, ga: totalGA.toString(), shots: totalShots.toString(), result: '' });
+            try { await fetch(SCRIPT_URL + '?' + goalieParams.toString(), { mode: 'no-cors' }); } catch (e) {}
+            btn.disabled = false; btn.textContent = 'Save Game';
             showToast('Game ' + gameState.gameNum + ' saved to sheet!');
         }
 
-        // ============ TOAST ============
         function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -1242,17 +852,7 @@
             setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
-        // ============ INIT ============
-        function init() {
-            // Check for saved URL
-            if (!SCRIPT_URL) {
-                document.getElementById('setupModal').classList.add('active');
-            } else {
-                // Load center labels
-                loadCenterLabels();
-            }
-        }
-
+        function init() { if (!SCRIPT_URL) { document.getElementById('setupModal').classList.add('active'); } else { loadCenterLabels(); } }
         init();
     </script>
 </body>
