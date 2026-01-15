@@ -757,19 +757,21 @@
         function updatePeriodDisplay() {
             let foW = 0, foL = 0;
             ['c1', 'c2', 'c3', 'other'].forEach(c => { foW += gameState.fo[c].w; foL += gameState.fo[c].l; });
-            const shots = gameState.shots + gameState.goals, ga = gameState.goals;
+            const total = foW + foL;
+            const pct = total > 0 ? Math.round((foW / total) * 100) : 0;
             const el = document.getElementById('periodP' + currentPeriod + 'Data');
-            if (el) { el.textContent = `${foW}-${foL}, ${shots}/${ga}`; el.classList.remove('empty'); }
+            if (el) { el.textContent = `${foW}-${foL} ${pct}%`; el.classList.remove('empty'); }
             updateGameTotalsDisplay();
         }
 
         function updateGameTotalsDisplay() {
-            let totalFoW = 0, totalFoL = 0, totalShots = 0, totalGA = 0;
-            [1, 2, 3].forEach(p => { if (periodData[p]) { totalFoW += periodData[p].foW; totalFoL += periodData[p].foL; totalShots += periodData[p].shots; totalGA += periodData[p].ga; } });
+            let totalFoW = 0, totalFoL = 0;
+            [1, 2, 3].forEach(p => { if (periodData[p]) { totalFoW += periodData[p].foW; totalFoL += periodData[p].foL; } });
             ['c1', 'c2', 'c3', 'other'].forEach(c => { totalFoW += gameState.fo[c].w; totalFoL += gameState.fo[c].l; });
-            totalShots += gameState.shots + gameState.goals; totalGA += gameState.goals;
+            const total = totalFoW + totalFoL;
+            const pct = total > 0 ? Math.round((totalFoW / total) * 100) : 0;
             const gameEl = document.getElementById('periodGameData');
-            if (totalFoW + totalFoL > 0 || totalShots > 0) { gameEl.textContent = `${totalFoW}-${totalFoL}, ${totalShots}/${totalGA}`; gameEl.classList.remove('empty'); }
+            if (totalFoW + totalFoL > 0) { gameEl.textContent = `${totalFoW}-${totalFoL} ${pct}%`; gameEl.classList.remove('empty'); }
         }
 
         function savePeriod() {
