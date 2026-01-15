@@ -23,6 +23,12 @@
             --color-green-dark: #16a34a;
             --color-red: #dc2626;
             --color-red-light: #f87171;
+            
+            /* Center colors */
+            --c1-color: #3b82f6; /* Blue */
+            --c2-color: #a855f7; /* Purple */
+            --c3-color: #14b8a6; /* Teal */
+            --other-color: #f97316; /* Orange */
         }
 
         * { 
@@ -64,35 +70,35 @@
             background: var(--bg-card);
             border: 2px solid var(--border-light);
             border-radius: 12px;
-            padding: 10px 15px;
+            padding: 8px 12px;
             flex-shrink: 0;
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .lock-indicator {
-            font-size: 24px;
+            font-size: 22px;
         }
 
         .game-badge {
             background: var(--accent-gold);
             color: #000;
-            padding: 8px 15px;
-            border-radius: 10px;
+            padding: 6px 12px;
+            border-radius: 8px;
             text-align: center;
             border: 2px solid #d4a017;
         }
         .game-badge-label {
-            font-size: 9px;
+            font-size: 8px;
             text-transform: uppercase;
             opacity: 0.8;
         }
         .game-badge-num {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             line-height: 1;
         }
@@ -100,34 +106,34 @@
         .goalie-display {
             background: var(--bg-secondary);
             border: 2px solid var(--accent-gold);
-            border-radius: 10px;
-            padding: 8px 15px;
+            border-radius: 8px;
+            padding: 6px 12px;
             text-align: center;
         }
         .goalie-num {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             color: var(--accent-gold);
             line-height: 1;
         }
         .goalie-name {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-muted);
         }
 
         .header-right {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .setup-btn {
-            padding: 10px 15px;
+            padding: 8px 12px;
             background: var(--accent-purple);
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             color: white;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
         }
         .setup-btn:disabled {
@@ -142,20 +148,20 @@
         .period-bar {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             background: var(--bg-secondary);
             border: 1px solid var(--border-light);
             border-radius: 8px;
-            padding: 8px 12px;
+            padding: 6px 10px;
             flex-shrink: 0;
         }
 
         .period-summary {
             text-align: center;
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 6px;
             background: var(--bg-card);
-            min-width: 80px;
+            min-width: 70px;
         }
         .period-summary.active {
             border: 2px solid var(--accent-gold);
@@ -164,12 +170,12 @@
             border: 2px solid var(--color-green);
         }
         .period-label {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-dim);
             text-transform: uppercase;
         }
         .period-data {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             color: var(--text-secondary);
         }
@@ -179,62 +185,92 @@
 
         /* ============ FACEOFFS SECTION ============ */
         .section-title {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             color: #60a5fa;
             text-transform: uppercase;
             letter-spacing: 1px;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .fo-section {
             background: var(--bg-secondary);
             border: 1px solid var(--border-light);
             border-radius: 10px;
-            padding: 10px;
+            padding: 8px;
             flex: 1;
             display: flex;
             flex-direction: column;
+            min-height: 0;
         }
 
         .fo-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
+            min-height: 0;
         }
 
         .fo-card {
             background: var(--bg-card);
-            border: 2px solid var(--border-light);
+            border: 3px solid var(--border-light);
             border-radius: 12px;
-            padding: 10px;
+            padding: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+        
+        /* Color-coded center cards */
+        .fo-card.c1 {
+            border-color: var(--c1-color);
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.15) 0%, var(--bg-card) 100%);
+        }
+        .fo-card.c1 .fo-card-label { color: var(--c1-color); }
+        
+        .fo-card.c2 {
+            border-color: var(--c2-color);
+            background: linear-gradient(180deg, rgba(168, 85, 247, 0.15) 0%, var(--bg-card) 100%);
+        }
+        .fo-card.c2 .fo-card-label { color: var(--c2-color); }
+        
+        .fo-card.c3 {
+            border-color: var(--c3-color);
+            background: linear-gradient(180deg, rgba(20, 184, 166, 0.15) 0%, var(--bg-card) 100%);
+        }
+        .fo-card.c3 .fo-card-label { color: var(--c3-color); }
+        
+        .fo-card.other {
+            border-color: var(--other-color);
+            background: linear-gradient(180deg, rgba(249, 115, 22, 0.15) 0%, var(--bg-card) 100%);
+        }
+        .fo-card.other .fo-card-label { color: var(--other-color); }
 
         .fo-card-label {
-            font-size: 20px;
+            font-size: 28px;
             font-weight: bold;
             color: var(--accent-gold);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .fo-tap-row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
             width: 100%;
+            min-height: 0;
         }
 
         .fo-tap-btn {
             flex: 1;
-            min-height: 80px;
+            min-height: 60px;
+            max-height: 80px;
             border: none;
-            border-radius: 14px;
-            font-size: 36px;
+            border-radius: 12px;
+            font-size: 32px;
             font-weight: bold;
             color: white;
             cursor: pointer;
@@ -255,19 +291,20 @@
 
         .fo-dec-row {
             display: flex;
-            gap: 10px;
-            width: 100%;
-            margin-top: 6px;
+            gap: 8px;
+            width: 60%;
+            margin-top: 4px;
+            justify-content: center;
         }
 
         .fo-dec-btn {
-            flex: 1;
-            height: 32px;
+            width: 40px;
+            height: 26px;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 4px;
             background: var(--bg-secondary);
             color: var(--text-dim);
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -280,21 +317,21 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             background: var(--bg-card);
             border: 2px solid var(--border-light);
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 8px;
+            border-radius: 8px;
+            padding: 8px;
+            margin-top: 6px;
         }
         .fo-total-label {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
             text-transform: uppercase;
             font-weight: bold;
         }
         .fo-total-pct {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
             color: var(--color-green);
         }
@@ -303,7 +340,7 @@
         .fo-total-pct.yellow { color: var(--accent-gold); }
         .fo-total-pct.red { color: var(--color-red-light); }
         .fo-total-sub {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-secondary);
         }
 
@@ -312,14 +349,14 @@
             background: var(--bg-secondary);
             border: 1px solid var(--border-light);
             border-radius: 10px;
-            padding: 10px;
+            padding: 8px;
             flex-shrink: 0;
         }
 
         .goalie-tap-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
         .goalie-tap-wrapper {
@@ -330,10 +367,9 @@
 
         .goalie-tap-btn {
             width: 100%;
-            aspect-ratio: 1.5;
-            max-height: 120px;
-            border-radius: 14px;
-            border: 4px solid;
+            height: 90px;
+            border-radius: 12px;
+            border: 3px solid;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -353,26 +389,26 @@
             border-color: #f87171;
         }
         .goalie-tap-label {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             color: white;
             text-transform: uppercase;
         }
         .goalie-tap-count {
-            font-size: 40px;
+            font-size: 36px;
             font-weight: bold;
             color: white;
         }
 
         .goalie-tap-dec {
-            width: 80%;
-            height: 32px;
-            margin-top: 6px;
+            width: 50%;
+            height: 28px;
+            margin-top: 4px;
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 4px;
             color: var(--text-dim);
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -384,18 +420,18 @@
         .goalie-stats {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 25px;
             background: var(--bg-card);
             border: 2px solid var(--border-light);
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 8px;
+            border-radius: 8px;
+            padding: 8px;
+            margin-top: 6px;
         }
         .goalie-stat-item {
             text-align: center;
         }
         .goalie-stat-value {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             color: var(--color-green);
         }
@@ -406,7 +442,7 @@
         .goalie-stat-value.sv-warn { color: var(--accent-gold); }
         .goalie-stat-value.sv-bad { color: #f87171; }
         .goalie-stat-label {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-muted);
             text-transform: uppercase;
         }
@@ -420,10 +456,10 @@
 
         .save-btn {
             flex: 1;
-            padding: 15px;
+            padding: 14px;
             border: none;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
@@ -588,13 +624,6 @@
             margin-top: 8px;
             text-align: center;
         }
-
-        /* Loading state for setup */
-        .loading-spinner {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-muted);
-        }
     </style>
 </head>
 <body>
@@ -642,8 +671,8 @@
         <div class="fo-section">
             <div class="section-title">Faceoffs</div>
             <div class="fo-grid">
-                <!-- c1 -->
-                <div class="fo-card">
+                <!-- c1 - Blue -->
+                <div class="fo-card c1">
                     <div class="fo-card-label" id="foLabel_c1">c1</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_c1" onclick="foTap('c1', 'w')">W</button>
@@ -654,8 +683,8 @@
                         <button class="fo-dec-btn" onclick="foDec('c1', 'l')">−</button>
                     </div>
                 </div>
-                <!-- c2 -->
-                <div class="fo-card">
+                <!-- c2 - Purple -->
+                <div class="fo-card c2">
                     <div class="fo-card-label" id="foLabel_c2">c2</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_c2" onclick="foTap('c2', 'w')">W</button>
@@ -666,8 +695,8 @@
                         <button class="fo-dec-btn" onclick="foDec('c2', 'l')">−</button>
                     </div>
                 </div>
-                <!-- c3 -->
-                <div class="fo-card">
+                <!-- c3 - Teal -->
+                <div class="fo-card c3">
                     <div class="fo-card-label" id="foLabel_c3">c3</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_c3" onclick="foTap('c3', 'w')">W</button>
@@ -678,8 +707,8 @@
                         <button class="fo-dec-btn" onclick="foDec('c3', 'l')">−</button>
                     </div>
                 </div>
-                <!-- OTHER -->
-                <div class="fo-card">
+                <!-- OTHER - Orange -->
+                <div class="fo-card other">
                     <div class="fo-card-label" id="foLabel_other">OTHER</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_other" onclick="foTap('other', 'w')">W</button>
