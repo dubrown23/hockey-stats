@@ -207,25 +207,25 @@
             justify-content: space-between;
             align-items: center;
             background: #333;
-            border-radius: 8px;
-            padding: 6px 12px;
-            margin-top: 6px;
+            border-radius: 6px;
+            padding: 4px 10px;
+            margin-top: 4px;
             flex-shrink: 0;
         }
         
-        .fo-total-team { display: flex; align-items: center; gap: 10px; }
-        .fo-total-label { font-size: 14px; color: #aaa; text-transform: uppercase; font-weight: bold; }
-        .fo-total-pct { font-size: 28px; font-weight: bold; color: #fff; }
-        .fo-total-sub { font-size: 14px; color: #ccc; font-weight: bold; }
+        .fo-total-team { display: flex; align-items: center; gap: 8px; }
+        .fo-total-label { font-size: 12px; color: #aaa; text-transform: uppercase; font-weight: bold; }
+        .fo-total-pct { font-size: 24px; font-weight: bold; color: #fff; }
+        .fo-total-sub { font-size: 12px; color: #ccc; font-weight: bold; }
         
-        .fo-individual-stats { display: flex; gap: 5px; }
-        .fo-ind-stat { text-align: center; padding: 3px 8px; border-radius: 5px; }
+        .fo-individual-stats { display: flex; gap: 4px; }
+        .fo-ind-stat { text-align: center; padding: 3px 6px; border-radius: 5px; }
         .fo-ind-stat.c1 { background: #3b82f6; }
         .fo-ind-stat.c2 { background: #a855f7; }
         .fo-ind-stat.c3 { background: #14b8a6; }
         .fo-ind-stat.other { background: #f97316; }
-        .fo-ind-label { font-size: 9px; font-weight: bold; color: #fff; }
-        .fo-ind-value { font-size: 12px; font-weight: bold; color: #fff; }
+        .fo-ind-label { font-size: 8px; font-weight: bold; color: #fff; }
+        .fo-ind-value { font-size: 10px; font-weight: bold; color: #fff; white-space: nowrap; }
 
         /* GOALIE - 45% of space */
         .goalie-section {
@@ -841,7 +841,10 @@
                 const total = w + l;
                 const indEl = document.getElementById('foIndValue_' + c);
                 if (total === 0) { indEl.textContent = '-'; }
-                else { indEl.textContent = Math.round((w / total) * 100) + '%'; }
+                else { 
+                    const pct = Math.round((w / total) * 100);
+                    indEl.textContent = `${w}/${total} ${pct}%`; 
+                }
             });
             
             // Update team total (cumulative)
