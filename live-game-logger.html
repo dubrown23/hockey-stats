@@ -44,8 +44,7 @@
             flex-shrink: 0;
         }
 
-        .header-left { display: flex; align-items: center; gap: clamp(4px, 1vmin, 8px); }
-        .lock-indicator { font-size: clamp(14px, 3vmin, 22px); }
+        .header-left { display: flex; align-items: center; }
 
         .game-badge {
             background: #fbbf24;
@@ -57,16 +56,6 @@
         }
         .game-badge-label { font-size: clamp(6px, 1.2vmin, 9px); text-transform: uppercase; }
         .game-badge-num { font-size: clamp(12px, 3vmin, 20px); line-height: 1; }
-
-        .goalie-display {
-            background: #000;
-            border: 2px solid #fbbf24;
-            border-radius: 6px;
-            padding: clamp(2px, 0.5vmin, 4px) clamp(6px, 1.5vmin, 10px);
-            text-align: center;
-        }
-        .goalie-num { font-size: clamp(12px, 3vmin, 20px); font-weight: bold; color: #fbbf24; line-height: 1; }
-        .goalie-name { font-size: clamp(6px, 1.2vmin, 10px); color: #aaa; }
 
         .header-center { display: flex; gap: clamp(2px, 0.5vmin, 4px); }
 
@@ -296,11 +285,12 @@
 
         .goalie-stats {
             display: flex;
-            justify-content: center;
-            gap: clamp(16px, 4vmin, 40px);
+            justify-content: flex-start;
+            align-items: center;
+            gap: clamp(12px, 3vmin, 30px);
             background: #222;
             border-radius: clamp(6px, 1.5vmin, 10px);
-            padding: clamp(4px, 1vmin, 10px);
+            padding: clamp(4px, 1vmin, 10px) clamp(8px, 2vmin, 16px);
             margin-top: clamp(4px, 1vmin, 8px);
             flex-shrink: 0;
         }
@@ -310,6 +300,18 @@
         .goalie-stat-value.ga { color: #ef4444; }
         .goalie-stat-value.svpct { color: #fbbf24; }
         .goalie-stat-label { font-size: clamp(8px, 1.6vmin, 12px); color: #aaa; text-transform: uppercase; }
+        
+        /* Goalie display in stats bar */
+        .goalie-display {
+            background: #000;
+            border: 2px solid #fbbf24;
+            border-radius: 6px;
+            padding: clamp(4px, 1vmin, 8px) clamp(8px, 2vmin, 14px);
+            text-align: center;
+            margin-right: clamp(4px, 1vmin, 10px);
+        }
+        .goalie-num { font-size: clamp(16px, 3.5vmin, 26px); font-weight: bold; color: #fbbf24; line-height: 1; }
+        .goalie-name { font-size: clamp(8px, 1.5vmin, 12px); color: #aaa; }
 
         /* TOAST */
         .toast {
@@ -406,14 +408,9 @@
     <div class="container">
         <div class="header-bar">
             <div class="header-left">
-                <span class="lock-indicator" id="lockIndicator">🔓</span>
                 <div class="game-badge">
                     <div class="game-badge-label">Game</div>
                     <div class="game-badge-num" id="gameNum">1</div>
-                </div>
-                <div class="goalie-display">
-                    <div class="goalie-num" id="goalieNum">#31</div>
-                    <div class="goalie-name" id="goalieName">Tomasula</div>
                 </div>
             </div>
             <div class="header-center">
@@ -435,8 +432,7 @@
                 </div>
             </div>
             <div class="header-right">
-                <button class="header-btn" id="setupBtn" onclick="openSetup()">Setup</button>
-                <button class="header-btn" id="lockBtn" onclick="handleLockBtn()">Lock</button>
+                <button class="header-btn" id="menuBtn" onclick="openMenu()">Menu</button>
             </div>
         </div>
 
@@ -536,6 +532,10 @@
                 </div>
             </div>
             <div class="goalie-stats">
+                <div class="goalie-display">
+                    <div class="goalie-num" id="goalieNum">#31</div>
+                    <div class="goalie-name" id="goalieName">Tomasula</div>
+                </div>
                 <div class="goalie-stat-item">
                     <div class="goalie-stat-value shots" id="statShots">-</div>
                     <div class="goalie-stat-label">Shots</div>
@@ -554,52 +554,51 @@
 
     <div class="toast" id="toast"></div>
 
-    <!-- Setup Modal -->
-    <div class="modal-overlay" id="setupModal">
+    <!-- Unified Menu Modal -->
+    <div class="modal-overlay" id="menuModal">
         <div class="modal">
-            <div class="modal-title">⚙️ Game Setup</div>
-            <div class="modal-section">
-                <label>Apps Script URL</label>
-                <input type="text" class="modal-input" id="scriptUrl" placeholder="Paste Google Apps Script URL">
-                <div class="url-note">Same URL used in main stat entry app</div>
-            </div>
-            <div class="modal-section">
-                <label>Game Number</label>
-                <input type="number" class="modal-input" id="inputGameNum" min="1" max="50" value="1">
-            </div>
-            <div class="modal-section">
-                <label>Goalie</label>
-                <div class="goalie-select-grid">
-                    <div class="goalie-select-btn selected" id="setupGoalie31" onclick="selectSetupGoalie(31, 'Tomasula')">
-                        <div class="num">#31</div>
-                        <div class="name">Tomasula</div>
-                    </div>
-                    <div class="goalie-select-btn" id="setupGoalie41" onclick="selectSetupGoalie(41, 'Goodwin')">
-                        <div class="num">#41</div>
-                        <div class="name">Goodwin</div>
-                    </div>
-                    <div class="goalie-select-btn" id="setupGoalie67" onclick="selectSetupGoalie(67, 'Nease')">
-                        <div class="num">#67</div>
-                        <div class="name">Nease</div>
+            <div class="modal-title" id="menuTitle">📋 Menu</div>
+            
+            <!-- Setup section - only shown when unlocked -->
+            <div id="setupSection">
+                <div class="modal-section">
+                    <label>Apps Script URL</label>
+                    <input type="text" class="modal-input" id="scriptUrl" placeholder="Paste Google Apps Script URL">
+                    <div class="url-note">Same URL used in main stat entry app</div>
+                </div>
+                <div class="modal-section">
+                    <label>Game Number</label>
+                    <input type="number" class="modal-input" id="inputGameNum" min="1" max="50" value="1">
+                </div>
+                <div class="modal-section">
+                    <label>Goalie</label>
+                    <div class="goalie-select-grid">
+                        <div class="goalie-select-btn selected" id="setupGoalie31" onclick="selectSetupGoalie(31, 'Tomasula')">
+                            <div class="num">#31</div>
+                            <div class="name">Tomasula</div>
+                        </div>
+                        <div class="goalie-select-btn" id="setupGoalie41" onclick="selectSetupGoalie(41, 'Goodwin')">
+                            <div class="num">#41</div>
+                            <div class="name">Goodwin</div>
+                        </div>
+                        <div class="goalie-select-btn" id="setupGoalie67" onclick="selectSetupGoalie(67, 'Nease')">
+                            <div class="num">#67</div>
+                            <div class="name">Nease</div>
+                        </div>
                     </div>
                 </div>
+                <div class="modal-buttons" style="margin-bottom: 16px;">
+                    <button class="modal-btn confirm" onclick="applySetup()">Apply Settings</button>
+                </div>
+                <hr style="border: none; border-top: 1px solid #444; margin: 16px 0;">
             </div>
+            
+            <!-- Action buttons - always shown -->
             <div class="modal-buttons">
-                <button class="modal-btn cancel" onclick="closeSetup()">Cancel</button>
-                <button class="modal-btn confirm" onclick="confirmSetup()">Start Game</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Lock/Save Modal - shows when you tap Lock -->
-    <div class="modal-overlay" id="lockModal">
-        <div class="modal">
-            <div class="modal-title">🔒 Save & Lock</div>
-            <div class="modal-buttons">
-                <button class="modal-btn period" onclick="savePeriodAndLock()">Save Period</button>
-                <button class="modal-btn game" onclick="saveGameAndLock()">Save Game</button>
-                <button class="modal-btn lock-only" onclick="justLock()">Just Lock</button>
-                <button class="modal-btn cancel" onclick="closeLockModal()">Cancel</button>
+                <button class="modal-btn period" onclick="savePeriodFromMenu()">Save Period</button>
+                <button class="modal-btn game" onclick="saveGameFromMenu()">Save Game</button>
+                <button class="modal-btn lock-only" id="lockUnlockBtn" onclick="toggleLock()">Lock</button>
+                <button class="modal-btn cancel" onclick="closeMenu()">Cancel</button>
             </div>
         </div>
     </div>
@@ -709,15 +708,25 @@
             });
         }
 
-        // Setup Modal
-        function openSetup() {
-            if (isLocked) return;
-            document.getElementById('setupModal').classList.add('active');
+        // Unified Menu Modal
+        function openMenu() {
+            document.getElementById('menuModal').classList.add('active');
             document.getElementById('scriptUrl').value = SCRIPT_URL;
             document.getElementById('inputGameNum').value = gameState.gameNum;
+            
+            // Show/hide setup section based on lock state
+            document.getElementById('setupSection').style.display = isLocked ? 'none' : 'block';
+            
+            // Update lock/unlock button text
+            document.getElementById('lockUnlockBtn').textContent = isLocked ? 'Unlock' : 'Lock';
+            
+            // Update menu title
+            document.getElementById('menuTitle').textContent = isLocked ? '🔒 Locked' : '📋 Menu';
         }
 
-        function closeSetup() { document.getElementById('setupModal').classList.remove('active'); }
+        function closeMenu() { 
+            document.getElementById('menuModal').classList.remove('active'); 
+        }
 
         function selectSetupGoalie(num, name) {
             setupState.goalie = { num, name };
@@ -725,7 +734,7 @@
             document.getElementById('setupGoalie' + num).classList.add('selected');
         }
 
-        async function confirmSetup() {
+        async function applySetup() {
             const url = document.getElementById('scriptUrl').value.trim();
             const gameNum = parseInt(document.getElementById('inputGameNum').value) || 1;
             if (!url) { showToast('Enter Apps Script URL', true); return; }
@@ -737,8 +746,7 @@
             document.getElementById('goalieNum').textContent = '#' + setupState.goalie.num;
             document.getElementById('goalieName').textContent = setupState.goalie.name;
             await loadCenterLabels();
-            closeSetup();
-            showToast('Game ' + gameNum + ' ready!');
+            showToast('Settings applied!');
         }
 
         async function loadCenterLabels() {
@@ -757,50 +765,45 @@
             } catch (e) { console.error('Error loading labels:', e); }
         }
 
-        // Lock Modal
-        function handleLockBtn() {
+        // Lock functions
+        function toggleLock() {
             if (isLocked) {
                 isLocked = false;
-                document.getElementById('lockIndicator').textContent = '🔓';
-                document.getElementById('setupBtn').disabled = false;
-                document.getElementById('lockBtn').textContent = 'Lock';
-                document.getElementById('lockBtn').classList.remove('locked');
+                updateMenuButton();
+                closeMenu();
                 showToast('Unlocked');
             } else {
-                document.getElementById('lockModal').classList.add('active');
+                isLocked = true;
+                updateMenuButton();
+                closeMenu();
+                showToast('Locked');
+            }
+        }
+        
+        function updateMenuButton() {
+            const btn = document.getElementById('menuBtn');
+            if (isLocked) {
+                btn.textContent = 'Locked';
+                btn.classList.add('locked');
+            } else {
+                btn.textContent = 'Menu';
+                btn.classList.remove('locked');
             }
         }
 
-        function closeLockModal() { document.getElementById('lockModal').classList.remove('active'); }
-
-        function justLock() {
-            closeLockModal();
-            doLock();
-        }
-
-        function doLock() {
-            isLocked = true;
-            document.getElementById('lockIndicator').textContent = '🔒';
-            document.getElementById('setupBtn').disabled = true;
-            document.getElementById('lockBtn').textContent = 'Unlock';
-            document.getElementById('lockBtn').classList.add('locked');
-            showToast('Locked');
-        }
-
-        function savePeriodAndLock() {
-            closeLockModal();
+        function savePeriodFromMenu() {
             savePeriod();
-            doLock();
+            closeMenu();
         }
 
-        async function saveGameAndLock() {
-            closeLockModal();
+        async function saveGameFromMenu() {
             await saveGame();
-            doLock();
+            closeMenu();
         }
 
         // Faceoffs
         function foTap(center, type) {
+            if (isLocked) return; // Block taps when locked
             if (type === 'w') { 
                 gameState.fo[center].w++; 
                 document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w; 
@@ -814,6 +817,7 @@
         }
 
         function foDec(center, type) {
+            if (isLocked) return; // Block taps when locked
             if (type === 'w' && gameState.fo[center].w > 0) { 
                 gameState.fo[center].w--; 
                 document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w || 'W'; 
@@ -833,6 +837,7 @@
 
         // Goalie
         function tapShot() { 
+            if (isLocked) return; // Block taps when locked
             gameState.periodShots++; 
             gameState.totalShots++; 
             document.getElementById('shotCount').textContent = gameState.totalShots; 
@@ -840,6 +845,7 @@
             updatePeriodDisplay(); 
         }
         function tapGoal() { 
+            if (isLocked) return; // Block taps when locked
             gameState.periodGoals++; 
             gameState.totalGoals++; 
             document.getElementById('goalCount').textContent = gameState.totalGoals; 
@@ -847,6 +853,7 @@
             updatePeriodDisplay(); 
         }
         function undoShot() { 
+            if (isLocked) return; // Block taps when locked
             if (gameState.periodShots > 0 && gameState.totalShots > 0) { 
                 gameState.periodShots--; 
                 gameState.totalShots--; 
@@ -856,6 +863,7 @@
             } 
         }
         function undoGoal() { 
+            if (isLocked) return; // Block taps when locked
             if (gameState.periodGoals > 0 && gameState.totalGoals > 0) { 
                 gameState.periodGoals--; 
                 gameState.totalGoals--; 
@@ -1035,11 +1043,13 @@
 
         function init() { 
             if (!SCRIPT_URL) { 
-                document.getElementById('setupModal').classList.add('active'); 
+                // First time - open menu for setup
+                openMenu();
             } else { 
                 loadCenterLabels(); 
             }
             updateCardColors(); // Initialize colors on load
+            updateMenuButton(); // Initialize button state
         }
         init();
     </script>
