@@ -123,24 +123,26 @@
 
         .fo-card {
             border-radius: 12px;
-            padding: 6px;
+            padding: 8px;
             display: flex;
             flex-direction: column;
-            border: 4px solid;
+            border: 3px solid;
             min-height: 0;
             overflow: hidden;
+            position: relative;
         }
         
-        .fo-card.c1 { background: #3b82f6; border-color: #1d4ed8; }
-        .fo-card.c2 { background: #a855f7; border-color: #7c3aed; }
-        .fo-card.c3 { background: #14b8a6; border-color: #0d9488; }
-        .fo-card.other { background: #f97316; border-color: #ea580c; }
+        /* Muted pastel backgrounds - will be assigned dynamically via JS */
+        .fo-card.color-blue { background: #93c5fd; border-color: #3b82f6; }
+        .fo-card.color-purple { background: #d8b4fe; border-color: #a855f7; }
+        .fo-card.color-gold { background: #fde68a; border-color: #f59e0b; }
+        .fo-card.color-orange { background: #fed7aa; border-color: #f97316; }
 
         .fo-card-label {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: bold;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
             line-height: 1;
             text-align: center;
             flex-shrink: 0;
@@ -148,58 +150,63 @@
 
         .fo-tap-row { 
             display: flex; 
-            gap: 8px; 
+            justify-content: center;
+            gap: 16px; 
             flex: 1;
+            align-items: center;
             margin-top: 4px;
             min-height: 0;
         }
 
+        /* Circular W/L buttons */
         .fo-tap-btn {
-            flex: 1;
-            border: none;
-            border-radius: 10px;
-            font-size: 32px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid white;
+            font-size: 28px;
             font-weight: bold;
             color: white;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 50px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+            flex-shrink: 0;
         }
-        .fo-tap-btn:active { transform: scale(0.97); }
-        .fo-tap-btn.win { background: #15803d; }
-        .fo-tap-btn.loss { background: #b91c1c; }
+        .fo-tap-btn:active { transform: scale(0.95); }
+        .fo-tap-btn.win { background: #16a34a; }
+        .fo-tap-btn.loss { background: #dc2626; }
 
         .fo-card-bottom {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            gap: 6px;
-            margin-top: 4px;
+            margin-top: 6px;
             flex-shrink: 0;
         }
 
         .fo-card-stats { 
-            background: rgba(0,0,0,0.3);
-            padding: 2px 10px;
-            border-radius: 4px;
-            color: #fff;
+            background: rgba(0,0,0,0.2);
+            padding: 3px 12px;
+            border-radius: 6px;
+            color: #333;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         .fo-dec-btn {
-            width: 32px;
-            height: 24px;
+            width: 36px;
+            height: 28px;
             border: none;
-            border-radius: 4px;
-            background: rgba(0,0,0,0.3);
-            color: #fff;
-            font-size: 16px;
+            border-radius: 6px;
+            background: rgba(0,0,0,0.25);
+            color: #333;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
         }
+        .fo-dec-btn:active { background: rgba(0,0,0,0.4); }
 
         /* TEAM TOTAL */
         .fo-total {
@@ -220,12 +227,13 @@
         
         .fo-individual-stats { display: flex; gap: 4px; }
         .fo-ind-stat { text-align: center; padding: 3px 6px; border-radius: 5px; }
-        .fo-ind-stat.c1 { background: #3b82f6; }
-        .fo-ind-stat.c2 { background: #a855f7; }
-        .fo-ind-stat.c3 { background: #14b8a6; }
-        .fo-ind-stat.other { background: #f97316; }
-        .fo-ind-label { font-size: 8px; font-weight: bold; color: #fff; }
-        .fo-ind-value { font-size: 10px; font-weight: bold; color: #fff; white-space: nowrap; }
+        /* Muted colors for individual stats - dynamic via JS */
+        .fo-ind-stat.color-blue { background: #93c5fd; }
+        .fo-ind-stat.color-purple { background: #d8b4fe; }
+        .fo-ind-stat.color-gold { background: #fde68a; }
+        .fo-ind-stat.color-orange { background: #fed7aa; }
+        .fo-ind-label { font-size: 8px; font-weight: bold; color: #333; }
+        .fo-ind-value { font-size: 10px; font-weight: bold; color: #333; white-space: nowrap; }
 
         /* GOALIE - 45% of space */
         .goalie-section {
@@ -432,7 +440,7 @@
 
         <div class="fo-section">
             <div class="fo-grid">
-                <div class="fo-card c1">
+                <div class="fo-card color-blue" id="foCard_c1">
                     <div class="fo-card-label" id="foLabel_c1">c1</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_c1" onclick="foTap('c1', 'w')">W</button>
@@ -444,7 +452,7 @@
                         <button class="fo-dec-btn" onclick="foDec('c1', 'l')">−</button>
                     </div>
                 </div>
-                <div class="fo-card c2">
+                <div class="fo-card color-purple" id="foCard_c2">
                     <div class="fo-card-label" id="foLabel_c2">c2</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_c2" onclick="foTap('c2', 'w')">W</button>
@@ -456,7 +464,7 @@
                         <button class="fo-dec-btn" onclick="foDec('c2', 'l')">−</button>
                     </div>
                 </div>
-                <div class="fo-card c3">
+                <div class="fo-card color-gold" id="foCard_c3">
                     <div class="fo-card-label" id="foLabel_c3">c3</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_c3" onclick="foTap('c3', 'w')">W</button>
@@ -468,7 +476,7 @@
                         <button class="fo-dec-btn" onclick="foDec('c3', 'l')">−</button>
                     </div>
                 </div>
-                <div class="fo-card other">
+                <div class="fo-card color-orange" id="foCard_other">
                     <div class="fo-card-label" id="foLabel_other">OTHER</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_other" onclick="foTap('other', 'w')">W</button>
@@ -488,19 +496,19 @@
                     <span class="fo-total-sub" id="foTeamSub">0W - 0L</span>
                 </div>
                 <div class="fo-individual-stats">
-                    <div class="fo-ind-stat c1">
+                    <div class="fo-ind-stat color-blue" id="foIndStat_c1">
                         <div class="fo-ind-label" id="foIndLabel_c1">c1</div>
                         <div class="fo-ind-value" id="foIndValue_c1">-</div>
                     </div>
-                    <div class="fo-ind-stat c2">
+                    <div class="fo-ind-stat color-purple" id="foIndStat_c2">
                         <div class="fo-ind-label" id="foIndLabel_c2">c2</div>
                         <div class="fo-ind-value" id="foIndValue_c2">-</div>
                     </div>
-                    <div class="fo-ind-stat c3">
+                    <div class="fo-ind-stat color-gold" id="foIndStat_c3">
                         <div class="fo-ind-label" id="foIndLabel_c3">c3</div>
                         <div class="fo-ind-value" id="foIndValue_c3">-</div>
                     </div>
-                    <div class="fo-ind-stat other">
+                    <div class="fo-ind-stat color-orange" id="foIndStat_other">
                         <div class="fo-ind-label">OTH</div>
                         <div class="fo-ind-value" id="foIndValue_other">-</div>
                     </div>
@@ -599,19 +607,105 @@
         let isLocked = false;
         let currentPeriod = 1;
 
+        // Track which center currently has purple (best FO%)
+        let purpleCenter = null; // null until someone wins a faceoff
+
         const gameState = {
             gameNum: 1,
             goalie: { num: 31, name: 'Tomasula', value: '#31 Tomasula' },
             fo: { c1: { w: 0, l: 0 }, c2: { w: 0, l: 0 }, c3: { w: 0, l: 0 }, other: { w: 0, l: 0 } },
             labels: { c1: 'c1', c2: 'c2', c3: 'c3', other: 'OTHER' },
-            periodShots: 0,  // Current period shots (saves)
-            periodGoals: 0,  // Current period goals against
-            totalShots: 0,   // Cumulative game shots (saves)
-            totalGoals: 0    // Cumulative game goals against
+            periodShots: 0,
+            periodGoals: 0,
+            totalShots: 0,
+            totalGoals: 0
         };
 
         const periodData = { 1: null, 2: null, 3: null };
         const setupState = { goalie: { num: 31, name: 'Tomasula' } };
+
+        // Color assignment for centers (OTHER is always orange)
+        function updateCardColors() {
+            const centers = ['c1', 'c2', 'c3'];
+            
+            // Calculate cumulative FO% for each center
+            const stats = {};
+            centers.forEach(c => {
+                let w = 0, l = 0;
+                [1, 2, 3].forEach(p => { 
+                    if (periodData[p] && periodData[p].fo[c]) { 
+                        w += periodData[p].fo[c].w; 
+                        l += periodData[p].fo[c].l; 
+                    } 
+                });
+                w += gameState.fo[c].w;
+                l += gameState.fo[c].l;
+                const total = w + l;
+                stats[c] = { w, l, total, pct: total > 0 ? (w / total) * 100 : 0 };
+            });
+            
+            // Determine who should have purple
+            let bestCenter = null;
+            let bestPct = -1;
+            
+            // Only assign purple if someone has taken at least one faceoff
+            const anyFaceoffs = centers.some(c => stats[c].total > 0);
+            
+            if (anyFaceoffs) {
+                // If no one has purple yet, find the best
+                if (purpleCenter === null) {
+                    centers.forEach(c => {
+                        if (stats[c].total > 0 && stats[c].pct > bestPct) {
+                            bestPct = stats[c].pct;
+                            bestCenter = c;
+                        }
+                    });
+                    purpleCenter = bestCenter;
+                } else {
+                    // Check if someone else beat the current purple holder
+                    const currentPurplePct = stats[purpleCenter].pct;
+                    centers.forEach(c => {
+                        if (c !== purpleCenter && stats[c].total > 0 && stats[c].pct > currentPurplePct) {
+                            // Someone else is better now
+                            if (stats[c].pct > bestPct) {
+                                bestPct = stats[c].pct;
+                                bestCenter = c;
+                            }
+                        }
+                    });
+                    if (bestCenter) {
+                        purpleCenter = bestCenter;
+                    }
+                }
+            }
+            
+            // Assign colors: purple to leader, blue and gold to others
+            const colorAssignments = {};
+            const availableColors = ['blue', 'gold'];
+            
+            centers.forEach(c => {
+                if (c === purpleCenter) {
+                    colorAssignments[c] = 'purple';
+                } else {
+                    colorAssignments[c] = availableColors.shift() || 'blue';
+                }
+            });
+            colorAssignments['other'] = 'orange';
+            
+            // Apply colors to cards and individual stats
+            ['c1', 'c2', 'c3', 'other'].forEach(c => {
+                const card = document.getElementById('foCard_' + c);
+                const indStat = document.getElementById('foIndStat_' + c);
+                
+                // Remove all color classes
+                card.classList.remove('color-blue', 'color-purple', 'color-gold', 'color-orange');
+                indStat.classList.remove('color-blue', 'color-purple', 'color-gold', 'color-orange');
+                
+                // Add the assigned color
+                card.classList.add('color-' + colorAssignments[c]);
+                indStat.classList.add('color-' + colorAssignments[c]);
+            });
+        }
 
         // Setup Modal
         function openSetup() {
@@ -661,10 +755,9 @@
             } catch (e) { console.error('Error loading labels:', e); }
         }
 
-        // Lock Modal - tap Lock button shows save options
+        // Lock Modal
         function handleLockBtn() {
             if (isLocked) {
-                // Unlock immediately
                 isLocked = false;
                 document.getElementById('lockIndicator').textContent = '🔓';
                 document.getElementById('setupBtn').disabled = false;
@@ -672,7 +765,6 @@
                 document.getElementById('lockBtn').classList.remove('locked');
                 showToast('Unlocked');
             } else {
-                // Show save options modal
                 document.getElementById('lockModal').classList.add('active');
             }
         }
@@ -705,7 +797,7 @@
             doLock();
         }
 
-        // Faceoffs - per period counters, cumulative stats in bottom bar
+        // Faceoffs
         function foTap(center, type) {
             if (type === 'w') { 
                 gameState.fo[center].w++; 
@@ -716,6 +808,7 @@
             }
             updateCardStats(center);
             updatePeriodDisplay();
+            updateCardColors();
         }
 
         function foDec(center, type) {
@@ -728,15 +821,15 @@
             }
             updateCardStats(center);
             updatePeriodDisplay();
+            updateCardColors();
         }
 
         function updateCardStats(center) {
-            // Show current period stats on the card
             const w = gameState.fo[center].w, l = gameState.fo[center].l;
             document.getElementById('foStats_' + center).textContent = w + '-' + l;
         }
 
-        // Goalie - tracks both period and cumulative
+        // Goalie
         function tapShot() { 
             gameState.periodShots++; 
             gameState.totalShots++; 
@@ -771,7 +864,6 @@
         }
 
         function updateGoalieStats() {
-            // Always show CUMULATIVE totals in goalie section
             const totalShots = gameState.totalShots + gameState.totalGoals;
             const ga = gameState.totalGoals;
             const saves = gameState.totalShots;
@@ -782,15 +874,12 @@
             else { svPctEl.textContent = (saves / totalShots).toFixed(3); }
         }
 
-        // Period tracking
         function updatePeriodDisplay() {
-            // Current period faceoffs
             let foW = 0, foL = 0;
             ['c1', 'c2', 'c3', 'other'].forEach(c => { foW += gameState.fo[c].w; foL += gameState.fo[c].l; });
             const foTotal = foW + foL;
             const foPct = foTotal > 0 ? Math.round((foW / foTotal) * 100) : 0;
             
-            // Current period goalie (just current period, not cumulative)
             const periodShots = gameState.periodShots + gameState.periodGoals;
             const periodGA = gameState.periodGoals;
             const svPct = periodShots > 0 ? Math.round(((periodShots - periodGA) / periodShots) * 100) : 0;
@@ -804,14 +893,12 @@
         }
 
         function updateGameTotalsDisplay() {
-            // Game total faceoffs (all periods + current)
             let totalFoW = 0, totalFoL = 0;
             [1, 2, 3].forEach(p => { if (periodData[p]) { totalFoW += periodData[p].foW; totalFoL += periodData[p].foL; } });
             ['c1', 'c2', 'c3', 'other'].forEach(c => { totalFoW += gameState.fo[c].w; totalFoL += gameState.fo[c].l; });
             const foTotal = totalFoW + totalFoL;
             const foPct = foTotal > 0 ? Math.round((totalFoW / foTotal) * 100) : 0;
             
-            // Game total goalie (cumulative)
             const totalShots = gameState.totalShots + gameState.totalGoals;
             const totalGA = gameState.totalGoals;
             const svPct = totalShots > 0 ? Math.round(((totalShots - totalGA) / totalShots) * 100) : 0;
@@ -822,13 +909,11 @@
                 gameEl.classList.remove('empty'); 
             }
             
-            // Update cumulative individual FO stats in bottom bar
             updateCumulativeFOStats();
         }
         
         function updateCumulativeFOStats() {
             ['c1', 'c2', 'c3', 'other'].forEach(c => {
-                // Sum all saved periods + current
                 let w = 0, l = 0;
                 [1, 2, 3].forEach(p => { 
                     if (periodData[p] && periodData[p].fo[c]) { 
@@ -847,7 +932,6 @@
                 }
             });
             
-            // Update team total (cumulative)
             let totalW = 0, totalL = 0;
             [1, 2, 3].forEach(p => { if (periodData[p]) { totalW += periodData[p].foW; totalL += periodData[p].foL; } });
             ['c1', 'c2', 'c3', 'other'].forEach(c => { totalW += gameState.fo[c].w; totalL += gameState.fo[c].l; });
@@ -861,7 +945,6 @@
             let foW = 0, foL = 0;
             ['c1', 'c2', 'c3', 'other'].forEach(c => { foW += gameState.fo[c].w; foL += gameState.fo[c].l; });
             
-            // Save period data including this period's goalie stats
             periodData[currentPeriod] = { 
                 foW, 
                 foL, 
@@ -877,14 +960,13 @@
             if (currentPeriod < 3) { 
                 currentPeriod++; 
                 document.getElementById('periodP' + currentPeriod).classList.add('active'); 
-                resetPeriodCounters(); // Only reset period counters, not cumulative
+                resetPeriodCounters();
             }
             showToast('P' + savedPeriod + ' Saved!');
             updateGameTotalsDisplay();
         }
 
         function resetPeriodCounters() {
-            // Reset faceoff counters for new period
             ['c1', 'c2', 'c3', 'other'].forEach(c => {
                 gameState.fo[c] = { w: 0, l: 0 };
                 document.getElementById('foBtnW_' + c).textContent = 'W';
@@ -892,21 +974,17 @@
                 document.getElementById('foStats_' + c).textContent = '0-0';
             });
             
-            // Reset period goalie counters (but NOT cumulative totals)
             gameState.periodShots = 0;
             gameState.periodGoals = 0;
             
-            // DON'T reset totalShots/totalGoals - goalie display stays cumulative
-            // DON'T reset shotCount/goalCount display - shows cumulative
-            
             updateCumulativeFOStats();
+            updateCardColors();
         }
 
         async function saveGame() {
             if (!SCRIPT_URL) { showToast('Setup required', true); return; }
             showToast('Saving...');
             
-            // Cumulative faceoffs from all periods + current
             let totalFo = { c1: { w: 0, l: 0 }, c2: { w: 0, l: 0 }, c3: { w: 0, l: 0 }, c4: { w: 0, l: 0 }, c5: { w: 0, l: 0 }, other: { w: 0, l: 0 } };
             [1, 2, 3].forEach(p => { 
                 if (periodData[p]) { 
@@ -921,7 +999,6 @@
                 totalFo[c].l += gameState.fo[c].l; 
             });
             
-            // Use cumulative goalie totals
             const totalShots = gameState.totalShots + gameState.totalGoals;
             const totalGA = gameState.totalGoals;
             
@@ -954,7 +1031,14 @@
             setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
-        function init() { if (!SCRIPT_URL) { document.getElementById('setupModal').classList.add('active'); } else { loadCenterLabels(); } }
+        function init() { 
+            if (!SCRIPT_URL) { 
+                document.getElementById('setupModal').classList.add('active'); 
+            } else { 
+                loadCenterLabels(); 
+            }
+            updateCardColors(); // Initialize colors on load
+        }
         init();
     </script>
 </body>
