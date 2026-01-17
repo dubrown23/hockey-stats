@@ -29,8 +29,8 @@
             flex-direction: column;
             height: 100vh;
             height: 100dvh;
-            padding: 8px;
-            gap: 6px;
+            padding: clamp(4px, 1vmin, 10px);
+            gap: clamp(4px, 1vmin, 8px);
         }
 
         /* HEADER */
@@ -39,63 +39,63 @@
             justify-content: space-between;
             align-items: center;
             background: #333;
-            border-radius: 8px;
-            padding: 4px 8px;
+            border-radius: clamp(6px, 1.5vmin, 10px);
+            padding: clamp(3px, 0.8vmin, 6px) clamp(6px, 1.5vmin, 12px);
             flex-shrink: 0;
         }
 
-        .header-left { display: flex; align-items: center; gap: 6px; }
-        .lock-indicator { font-size: 18px; }
+        .header-left { display: flex; align-items: center; gap: clamp(4px, 1vmin, 8px); }
+        .lock-indicator { font-size: clamp(14px, 3vmin, 22px); }
 
         .game-badge {
             background: #fbbf24;
             color: #000;
-            padding: 3px 8px;
+            padding: clamp(2px, 0.5vmin, 4px) clamp(6px, 1.5vmin, 10px);
             border-radius: 6px;
             text-align: center;
             font-weight: bold;
         }
-        .game-badge-label { font-size: 7px; text-transform: uppercase; }
-        .game-badge-num { font-size: 16px; line-height: 1; }
+        .game-badge-label { font-size: clamp(6px, 1.2vmin, 9px); text-transform: uppercase; }
+        .game-badge-num { font-size: clamp(12px, 3vmin, 20px); line-height: 1; }
 
         .goalie-display {
             background: #000;
             border: 2px solid #fbbf24;
             border-radius: 6px;
-            padding: 3px 8px;
+            padding: clamp(2px, 0.5vmin, 4px) clamp(6px, 1.5vmin, 10px);
             text-align: center;
         }
-        .goalie-num { font-size: 16px; font-weight: bold; color: #fbbf24; line-height: 1; }
-        .goalie-name { font-size: 8px; color: #aaa; }
+        .goalie-num { font-size: clamp(12px, 3vmin, 20px); font-weight: bold; color: #fbbf24; line-height: 1; }
+        .goalie-name { font-size: clamp(6px, 1.2vmin, 10px); color: #aaa; }
 
-        .header-center { display: flex; gap: 3px; }
+        .header-center { display: flex; gap: clamp(2px, 0.5vmin, 4px); }
 
         .period-summary {
             text-align: center;
-            padding: 3px 5px;
+            padding: clamp(2px, 0.5vmin, 4px) clamp(4px, 1vmin, 6px);
             border-radius: 6px;
             background: #555;
-            min-width: 90px;
+            min-width: clamp(60px, 15vmin, 100px);
         }
         .period-summary.active { background: #fbbf24; color: #000; }
         .period-summary.saved { background: #22c55e; color: #fff; }
-        .period-label { font-size: 8px; text-transform: uppercase; color: #ccc; }
+        .period-label { font-size: clamp(6px, 1.2vmin, 10px); text-transform: uppercase; color: #ccc; }
         .period-summary.active .period-label { color: #333; }
         .period-summary.saved .period-label { color: #fff; }
-        .period-data { font-size: 9px; font-weight: bold; color: #fff; white-space: nowrap; }
+        .period-data { font-size: clamp(7px, 1.5vmin, 11px); font-weight: bold; color: #fff; white-space: nowrap; }
         .period-summary.active .period-data { color: #000; }
         .period-data.empty { opacity: 0.5; }
 
-        .header-right { display: flex; gap: 4px; }
+        .header-right { display: flex; gap: clamp(3px, 0.8vmin, 6px); }
 
         .header-btn {
-            padding: 6px 10px;
+            padding: clamp(4px, 1vmin, 8px) clamp(8px, 2vmin, 14px);
             background: #6366f1;
             border: none;
             border-radius: 5px;
             color: white;
             font-weight: bold;
-            font-size: 10px;
+            font-size: clamp(8px, 1.8vmin, 12px);
             cursor: pointer;
         }
         .header-btn:disabled { opacity: 0.5; }
@@ -105,8 +105,8 @@
         .fo-section {
             flex: 55;
             background: #d0d0d0;
-            border-radius: 10px;
-            padding: 6px;
+            border-radius: clamp(8px, 2vmin, 14px);
+            padding: clamp(4px, 1vmin, 8px);
             display: flex;
             flex-direction: column;
             min-height: 0;
@@ -116,17 +116,17 @@
         .fo-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
+            gap: clamp(4px, 1vmin, 8px);
             flex: 1;
             min-height: 0;
         }
 
         .fo-card {
-            border-radius: 12px;
-            padding: 8px;
+            border-radius: clamp(8px, 2vmin, 14px);
+            padding: clamp(4px, 1vmin, 10px);
             display: flex;
             flex-direction: column;
-            border: 3px solid;
+            border: clamp(2px, 0.5vmin, 4px) solid;
             min-height: 0;
             overflow: hidden;
             position: relative;
@@ -139,7 +139,7 @@
         .fo-card.color-orange { background: #fed7aa; border-color: #f97316; }
 
         .fo-card-label {
-            font-size: 42px;
+            font-size: clamp(28px, 6vmin, 48px);
             font-weight: bold;
             color: #333;
             text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
@@ -151,27 +151,29 @@
         .fo-tap-row { 
             display: flex; 
             justify-content: center;
-            gap: 16px; 
+            gap: clamp(8px, 2vmin, 20px); 
             flex: 1;
             align-items: center;
             margin-top: 4px;
             min-height: 0;
+            padding: 4px;
         }
 
-        /* Circular W/L buttons */
+        /* Circular W/L buttons - responsive sizing */
         .fo-tap-btn {
-            width: 80px;
-            height: 80px;
+            /* Size based on available height, max out at reasonable size */
+            width: clamp(70px, 18vmin, 180px);
+            height: clamp(70px, 18vmin, 180px);
             border-radius: 50%;
-            border: 4px solid white;
-            font-size: 28px;
+            border: clamp(3px, 0.8vmin, 6px) solid white;
+            font-size: clamp(24px, 6vmin, 56px);
             font-weight: bold;
             color: white;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.35);
             flex-shrink: 0;
         }
         .fo-tap-btn:active { transform: scale(0.95); }
@@ -182,27 +184,27 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 6px;
+            margin-top: clamp(4px, 1vmin, 8px);
             flex-shrink: 0;
         }
 
         .fo-card-stats { 
             background: rgba(0,0,0,0.2);
-            padding: 3px 12px;
+            padding: clamp(2px, 0.5vmin, 6px) clamp(8px, 2vmin, 16px);
             border-radius: 6px;
             color: #333;
             font-weight: bold;
-            font-size: 16px;
+            font-size: clamp(14px, 3vmin, 22px);
         }
 
         .fo-dec-btn {
-            width: 36px;
-            height: 28px;
+            width: clamp(32px, 8vmin, 56px);
+            height: clamp(26px, 5vmin, 40px);
             border: none;
             border-radius: 6px;
             background: rgba(0,0,0,0.25);
             color: #333;
-            font-size: 18px;
+            font-size: clamp(16px, 3.5vmin, 26px);
             font-weight: bold;
             cursor: pointer;
         }
@@ -214,33 +216,33 @@
             justify-content: space-between;
             align-items: center;
             background: #333;
-            border-radius: 6px;
-            padding: 4px 10px;
-            margin-top: 4px;
+            border-radius: clamp(4px, 1vmin, 8px);
+            padding: clamp(3px, 0.8vmin, 6px) clamp(6px, 1.5vmin, 12px);
+            margin-top: clamp(3px, 0.8vmin, 6px);
             flex-shrink: 0;
         }
         
-        .fo-total-team { display: flex; align-items: center; gap: 8px; }
-        .fo-total-label { font-size: 12px; color: #aaa; text-transform: uppercase; font-weight: bold; }
-        .fo-total-pct { font-size: 24px; font-weight: bold; color: #fff; }
-        .fo-total-sub { font-size: 12px; color: #ccc; font-weight: bold; }
+        .fo-total-team { display: flex; align-items: center; gap: clamp(4px, 1vmin, 10px); }
+        .fo-total-label { font-size: clamp(10px, 2vmin, 14px); color: #aaa; text-transform: uppercase; font-weight: bold; }
+        .fo-total-pct { font-size: clamp(18px, 4vmin, 28px); font-weight: bold; color: #fff; }
+        .fo-total-sub { font-size: clamp(10px, 2vmin, 14px); color: #ccc; font-weight: bold; }
         
-        .fo-individual-stats { display: flex; gap: 4px; }
-        .fo-ind-stat { text-align: center; padding: 3px 6px; border-radius: 5px; }
+        .fo-individual-stats { display: flex; gap: clamp(3px, 0.6vmin, 6px); }
+        .fo-ind-stat { text-align: center; padding: clamp(2px, 0.5vmin, 4px) clamp(4px, 1vmin, 8px); border-radius: 5px; }
         /* Muted colors for individual stats - dynamic via JS */
         .fo-ind-stat.color-blue { background: #93c5fd; }
         .fo-ind-stat.color-purple { background: #d8b4fe; }
         .fo-ind-stat.color-gold { background: #fde68a; }
         .fo-ind-stat.color-orange { background: #fed7aa; }
-        .fo-ind-label { font-size: 8px; font-weight: bold; color: #333; }
-        .fo-ind-value { font-size: 10px; font-weight: bold; color: #333; white-space: nowrap; }
+        .fo-ind-label { font-size: clamp(6px, 1.2vmin, 10px); font-weight: bold; color: #333; }
+        .fo-ind-value { font-size: clamp(8px, 1.6vmin, 12px); font-weight: bold; color: #333; white-space: nowrap; }
 
         /* GOALIE - 45% of space */
         .goalie-section {
             flex: 45;
             background: #333;
-            border-radius: 10px;
-            padding: 8px;
+            border-radius: clamp(8px, 2vmin, 14px);
+            padding: clamp(4px, 1vmin, 10px);
             display: flex;
             flex-direction: column;
             min-height: 0;
@@ -250,7 +252,7 @@
         .goalie-tap-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
-            gap: 10px; 
+            gap: clamp(6px, 1.5vmin, 14px); 
             flex: 1;
             min-height: 0;
         }
@@ -263,9 +265,9 @@
 
         .goalie-tap-btn {
             flex: 1;
-            min-height: 100px;
-            border-radius: 12px;
-            border: 4px solid;
+            min-height: clamp(60px, 12vmin, 120px);
+            border-radius: clamp(8px, 2vmin, 14px);
+            border: clamp(3px, 0.6vmin, 5px) solid;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -275,18 +277,18 @@
         .goalie-tap-btn:active { transform: scale(0.97); }
         .goalie-tap-btn.shot { background: #15803d; border-color: #22c55e; }
         .goalie-tap-btn.goal { background: #b91c1c; border-color: #ef4444; }
-        .goalie-tap-label { font-size: 18px; font-weight: bold; color: white; text-transform: uppercase; }
-        .goalie-tap-count { font-size: 56px; font-weight: bold; color: white; line-height: 1; }
+        .goalie-tap-label { font-size: clamp(12px, 2.5vmin, 20px); font-weight: bold; color: white; text-transform: uppercase; }
+        .goalie-tap-count { font-size: clamp(36px, 8vmin, 64px); font-weight: bold; color: white; line-height: 1; }
 
         .goalie-tap-dec {
             width: 60%;
-            height: 28px;
-            margin: 4px auto 0;
+            height: clamp(22px, 4vmin, 34px);
+            margin: clamp(2px, 0.5vmin, 6px) auto 0;
             background: #555;
             border: none;
             border-radius: 5px;
             color: #fff;
-            font-size: 12px;
+            font-size: clamp(10px, 2vmin, 14px);
             font-weight: bold;
             cursor: pointer;
             flex-shrink: 0;
@@ -295,32 +297,32 @@
         .goalie-stats {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: clamp(16px, 4vmin, 40px);
             background: #222;
-            border-radius: 8px;
-            padding: 8px;
-            margin-top: 6px;
+            border-radius: clamp(6px, 1.5vmin, 10px);
+            padding: clamp(4px, 1vmin, 10px);
+            margin-top: clamp(4px, 1vmin, 8px);
             flex-shrink: 0;
         }
         .goalie-stat-item { text-align: center; }
-        .goalie-stat-value { font-size: 28px; font-weight: bold; color: #fff; }
+        .goalie-stat-value { font-size: clamp(20px, 4.5vmin, 34px); font-weight: bold; color: #fff; }
         .goalie-stat-value.shots { color: #22c55e; }
         .goalie-stat-value.ga { color: #ef4444; }
         .goalie-stat-value.svpct { color: #fbbf24; }
-        .goalie-stat-label { font-size: 10px; color: #aaa; text-transform: uppercase; }
+        .goalie-stat-label { font-size: clamp(8px, 1.6vmin, 12px); color: #aaa; text-transform: uppercase; }
 
         /* TOAST */
         .toast {
             position: fixed;
-            bottom: 20px;
+            bottom: clamp(10px, 3vmin, 25px);
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: #15803d;
             color: white;
-            padding: 14px 28px;
-            border-radius: 10px;
+            padding: clamp(10px, 2vmin, 18px) clamp(18px, 4vmin, 34px);
+            border-radius: clamp(8px, 1.5vmin, 12px);
             font-weight: bold;
-            font-size: 18px;
+            font-size: clamp(14px, 3vmin, 22px);
             transition: transform 0.3s ease;
             z-index: 200;
         }
@@ -336,58 +338,58 @@
             align-items: center;
             justify-content: center;
             z-index: 100;
-            padding: 20px;
+            padding: clamp(12px, 3vmin, 24px);
         }
         .modal-overlay.active { display: flex; }
 
         .modal {
             background: #2a2a2a;
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: clamp(12px, 2.5vmin, 20px);
+            padding: clamp(14px, 3vmin, 24px);
             width: 100%;
-            max-width: 400px;
+            max-width: min(400px, 90vw);
         }
 
-        .modal-title { font-size: 20px; font-weight: bold; color: #fbbf24; text-align: center; margin-bottom: 20px; }
-        .modal-section { margin-bottom: 20px; }
-        .modal-section label { display: block; font-size: 12px; color: #aaa; text-transform: uppercase; margin-bottom: 8px; }
+        .modal-title { font-size: clamp(16px, 3.5vmin, 24px); font-weight: bold; color: #fbbf24; text-align: center; margin-bottom: clamp(14px, 3vmin, 24px); }
+        .modal-section { margin-bottom: clamp(14px, 3vmin, 24px); }
+        .modal-section label { display: block; font-size: clamp(10px, 2vmin, 14px); color: #aaa; text-transform: uppercase; margin-bottom: clamp(6px, 1.2vmin, 10px); }
 
         .modal-input {
             width: 100%;
-            padding: 14px;
+            padding: clamp(10px, 2vmin, 16px);
             background: #444;
             border: 2px solid #555;
             border-radius: 8px;
             color: #fff;
-            font-size: 16px;
+            font-size: clamp(14px, 2.5vmin, 18px);
         }
         .modal-input:focus { outline: none; border-color: #6366f1; }
 
-        .goalie-select-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .goalie-select-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(6px, 1.5vmin, 12px); }
 
         .goalie-select-btn {
-            padding: 15px 10px;
+            padding: clamp(10px, 2vmin, 18px) clamp(6px, 1.5vmin, 12px);
             background: #444;
             border: 2px solid #555;
-            border-radius: 10px;
+            border-radius: clamp(8px, 1.5vmin, 12px);
             cursor: pointer;
             text-align: center;
         }
         .goalie-select-btn.selected { background: #6366f1; border-color: #6366f1; }
-        .goalie-select-btn .num { font-size: 24px; font-weight: bold; color: #fbbf24; }
+        .goalie-select-btn .num { font-size: clamp(18px, 4vmin, 28px); font-weight: bold; color: #fbbf24; }
         .goalie-select-btn.selected .num { color: white; }
-        .goalie-select-btn .name { font-size: 11px; color: #aaa; }
+        .goalie-select-btn .name { font-size: clamp(9px, 1.8vmin, 13px); color: #aaa; }
         .goalie-select-btn.selected .name { color: #ddd; }
 
-        .modal-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+        .modal-buttons { display: flex; gap: clamp(6px, 1.5vmin, 12px); flex-wrap: wrap; }
 
         .modal-btn {
             flex: 1;
             min-width: 45%;
-            padding: 16px;
+            padding: clamp(12px, 2.5vmin, 20px);
             border: none;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: clamp(12px, 2.5vmin, 18px);
             font-weight: bold;
             cursor: pointer;
         }
@@ -397,7 +399,7 @@
         .modal-btn.game { background: #15803d; color: white; }
         .modal-btn.lock-only { background: #dc2626; color: white; }
 
-        .url-note { font-size: 11px; color: #888; margin-top: 8px; text-align: center; }
+        .url-note { font-size: clamp(9px, 1.8vmin, 13px); color: #888; margin-top: clamp(6px, 1.2vmin, 10px); text-align: center; }
     </style>
 </head>
 <body>
