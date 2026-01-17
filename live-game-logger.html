@@ -88,7 +88,6 @@
             cursor: pointer;
         }
         .header-btn:disabled { opacity: 0.5; }
-        .header-btn.locked { background: #dc2626; }
 
         /* FACEOFFS - 55% of space */
         .fo-section {
@@ -239,49 +238,54 @@
         }
 
         .goalie-tap-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: clamp(6px, 1.5vmin, 14px); 
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            gap: clamp(16px, 4vmin, 40px); 
             flex: 1;
             min-height: 0;
         }
         
         .goalie-tap-wrapper { 
             display: flex; 
-            flex-direction: column; 
+            flex-direction: column;
+            align-items: center;
             min-height: 0;
         }
 
+        /* Circular Shot/Goal buttons - larger than FO buttons */
         .goalie-tap-btn {
-            flex: 1;
-            min-height: clamp(60px, 12vmin, 120px);
-            border-radius: clamp(8px, 2vmin, 14px);
-            border: clamp(3px, 0.6vmin, 5px) solid;
+            width: clamp(100px, 24vmin, 240px);
+            height: clamp(100px, 24vmin, 240px);
+            border-radius: 50%;
+            border: clamp(4px, 1vmin, 8px) solid white;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
-        .goalie-tap-btn:active { transform: scale(0.97); }
-        .goalie-tap-btn.shot { background: #15803d; border-color: #22c55e; }
-        .goalie-tap-btn.goal { background: #b91c1c; border-color: #ef4444; }
-        .goalie-tap-label { font-size: clamp(12px, 2.5vmin, 20px); font-weight: bold; color: white; text-transform: uppercase; }
-        .goalie-tap-count { font-size: clamp(36px, 8vmin, 64px); font-weight: bold; color: white; line-height: 1; }
+        .goalie-tap-btn:active { transform: scale(0.95); }
+        .goalie-tap-btn.shot { background: #16a34a; }
+        .goalie-tap-btn.goal { background: #dc2626; }
+        .goalie-tap-label { font-size: clamp(14px, 3vmin, 24px); font-weight: bold; color: white; text-transform: uppercase; }
+        .goalie-tap-count { font-size: clamp(40px, 10vmin, 80px); font-weight: bold; color: white; line-height: 1; }
 
         .goalie-tap-dec {
-            width: 60%;
-            height: clamp(22px, 4vmin, 34px);
-            margin: clamp(2px, 0.5vmin, 6px) auto 0;
+            width: clamp(80px, 18vmin, 160px);
+            height: clamp(32px, 6vmin, 50px);
+            margin-top: clamp(6px, 1.5vmin, 12px);
             background: #555;
             border: none;
-            border-radius: 5px;
+            border-radius: clamp(6px, 1vmin, 10px);
             color: #fff;
-            font-size: clamp(10px, 2vmin, 14px);
+            font-size: clamp(12px, 2.5vmin, 18px);
             font-weight: bold;
             cursor: pointer;
             flex-shrink: 0;
         }
+        .goalie-tap-dec:active { transform: scale(0.95); }
 
         .goalie-stats {
             display: flex;
@@ -399,7 +403,6 @@
         .modal-btn.confirm { background: #15803d; color: white; }
         .modal-btn.period { background: #6366f1; color: white; }
         .modal-btn.game { background: #15803d; color: white; }
-        .modal-btn.lock-only { background: #dc2626; color: white; }
 
         .url-note { font-size: clamp(9px, 1.8vmin, 13px); color: #888; margin-top: clamp(6px, 1.2vmin, 10px); text-align: center; }
     </style>
@@ -475,7 +478,7 @@
                     </div>
                 </div>
                 <div class="fo-card color-orange" id="foCard_other">
-                    <div class="fo-card-label" id="foLabel_other">OTHER</div>
+                    <div class="fo-card-label" id="foLabel_other">#</div>
                     <div class="fo-tap-row">
                         <button class="fo-tap-btn win" id="foBtnW_other" onclick="foTap('other', 'w')">W</button>
                         <button class="fo-tap-btn loss" id="foBtnL_other" onclick="foTap('other', 'l')">L</button>
@@ -507,7 +510,7 @@
                         <div class="fo-ind-value" id="foIndValue_c3">-</div>
                     </div>
                     <div class="fo-ind-stat color-orange" id="foIndStat_other">
-                        <div class="fo-ind-label">OTH</div>
+                        <div class="fo-ind-label">#</div>
                         <div class="fo-ind-value" id="foIndValue_other">-</div>
                     </div>
                 </div>
@@ -557,9 +560,9 @@
     <!-- Unified Menu Modal -->
     <div class="modal-overlay" id="menuModal">
         <div class="modal">
-            <div class="modal-title" id="menuTitle">📋 Menu</div>
+            <div class="modal-title">📋 Menu</div>
             
-            <!-- Setup section - only shown when unlocked -->
+            <!-- Setup section -->
             <div id="setupSection">
                 <div class="modal-section">
                     <label>Apps Script URL</label>
@@ -593,11 +596,10 @@
                 <hr style="border: none; border-top: 1px solid #444; margin: 16px 0;">
             </div>
             
-            <!-- Action buttons - always shown -->
+            <!-- Action buttons -->
             <div class="modal-buttons">
                 <button class="modal-btn period" onclick="savePeriodFromMenu()">Save Period</button>
                 <button class="modal-btn game" onclick="saveGameFromMenu()">Save Game</button>
-                <button class="modal-btn lock-only" id="lockUnlockBtn" onclick="toggleLock()">Lock</button>
                 <button class="modal-btn cancel" onclick="closeMenu()">Cancel</button>
             </div>
         </div>
@@ -605,7 +607,6 @@
 
     <script>
         let SCRIPT_URL = localStorage.getItem('hockeyScriptUrl') || '';
-        let isLocked = false;
         let currentPeriod = 1;
 
         // Track which center currently has purple (best FO%)
@@ -713,15 +714,6 @@
             document.getElementById('menuModal').classList.add('active');
             document.getElementById('scriptUrl').value = SCRIPT_URL;
             document.getElementById('inputGameNum').value = gameState.gameNum;
-            
-            // Show/hide setup section based on lock state
-            document.getElementById('setupSection').style.display = isLocked ? 'none' : 'block';
-            
-            // Update lock/unlock button text
-            document.getElementById('lockUnlockBtn').textContent = isLocked ? 'Unlock' : 'Lock';
-            
-            // Update menu title
-            document.getElementById('menuTitle').textContent = isLocked ? '🔒 Locked' : '📋 Menu';
         }
 
         function closeMenu() { 
@@ -760,35 +752,10 @@
                         document.getElementById('foLabel_' + c).textContent = data.labels[c] || c;
                         document.getElementById('foIndLabel_' + c).textContent = data.labels[c] || c;
                     });
-                    document.getElementById('foLabel_other').textContent = data.labels.other || 'OTHER';
+                    // Always show "#" for other (simpler display)
+                    document.getElementById('foLabel_other').textContent = '#';
                 }
             } catch (e) { console.error('Error loading labels:', e); }
-        }
-
-        // Lock functions
-        function toggleLock() {
-            if (isLocked) {
-                isLocked = false;
-                updateMenuButton();
-                closeMenu();
-                showToast('Unlocked');
-            } else {
-                isLocked = true;
-                updateMenuButton();
-                closeMenu();
-                showToast('Locked');
-            }
-        }
-        
-        function updateMenuButton() {
-            const btn = document.getElementById('menuBtn');
-            if (isLocked) {
-                btn.textContent = 'Locked';
-                btn.classList.add('locked');
-            } else {
-                btn.textContent = 'Menu';
-                btn.classList.remove('locked');
-            }
         }
 
         function savePeriodFromMenu() {
@@ -803,7 +770,6 @@
 
         // Faceoffs
         function foTap(center, type) {
-            if (isLocked) return; // Block taps when locked
             if (type === 'w') { 
                 gameState.fo[center].w++; 
                 document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w; 
@@ -817,7 +783,6 @@
         }
 
         function foDec(center, type) {
-            if (isLocked) return; // Block taps when locked
             if (type === 'w' && gameState.fo[center].w > 0) { 
                 gameState.fo[center].w--; 
                 document.getElementById('foBtnW_' + center).textContent = gameState.fo[center].w || 'W'; 
@@ -837,7 +802,6 @@
 
         // Goalie
         function tapShot() { 
-            if (isLocked) return; // Block taps when locked
             gameState.periodShots++; 
             gameState.totalShots++; 
             document.getElementById('shotCount').textContent = gameState.totalShots; 
@@ -845,7 +809,6 @@
             updatePeriodDisplay(); 
         }
         function tapGoal() { 
-            if (isLocked) return; // Block taps when locked
             gameState.periodGoals++; 
             gameState.totalGoals++; 
             document.getElementById('goalCount').textContent = gameState.totalGoals; 
@@ -853,7 +816,6 @@
             updatePeriodDisplay(); 
         }
         function undoShot() { 
-            if (isLocked) return; // Block taps when locked
             if (gameState.periodShots > 0 && gameState.totalShots > 0) { 
                 gameState.periodShots--; 
                 gameState.totalShots--; 
@@ -863,7 +825,6 @@
             } 
         }
         function undoGoal() { 
-            if (isLocked) return; // Block taps when locked
             if (gameState.periodGoals > 0 && gameState.totalGoals > 0) { 
                 gameState.periodGoals--; 
                 gameState.totalGoals--; 
@@ -1049,7 +1010,6 @@
                 loadCenterLabels(); 
             }
             updateCardColors(); // Initialize colors on load
-            updateMenuButton(); // Initialize button state
         }
         init();
     </script>
